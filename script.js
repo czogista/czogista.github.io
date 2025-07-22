@@ -1,5 +1,5 @@
 if (performance.navigation.type === 1) {
-    window.location.href = "index.html";
+    window.location.href = "https://www.maleka.dev/";
     style.setAttribute("href", "style.css");
 }
 
