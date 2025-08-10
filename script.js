@@ -1,4 +1,4 @@
-if (performance.navigation.type === 1) {
+function reload() {
     window.location.href = "https://www.maleka.dev/";
     style.setAttribute("href", "style.css");
 }
