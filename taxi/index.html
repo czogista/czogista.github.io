@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en-US" id="htmlRoot">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Private Taxi Calculator - Maleka DEV</title>
+    <link rel="icon" type="image/png" href="../media/malekadev_icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="taxi-style.css">
+    <!-- Using OpenStreetMap/Nominatim instead of Google Maps for no API key requirement -->
+    <script src="taxi-script.js"></script>
+</head>
+
+<body>
+    <div class="dots"></div>
+    
+    <nav class="maininfo">
+        <div class="profile-img" id="imgmainp" style="display: none;"></div>
+        <nav class="info">
+            <div class="profile-img" id="imgsubp"></div>
+            <h1 onclick="goHome()">Maleka DEV</h1>
+            <div class="title">
+                <span class="title-suffix">Private Taxi Calculator</span>
+            </div>
+            
+            <div class="back-button">
+                <button class="btn" onclick="goHome()" data-en="← Back to Main Site" data-cs="← Zpět na hlavní stránku">← Back to Main Site</button>
+            </div>
+            
+            <div class="language-toggle">
+                <button class="lang-btn" onclick="toggleLanguage()" id="langToggle">🇨🇿 Čeština</button>
+            </div>
+        </nav>
+    </nav>
+
+    <div class="main-content" id="mainContent">
+        <div class="block">
+            <div class="card">
+                <h1 data-en="🚖 Private Taxi Calculator" data-cs="🚖 Kalkulačka soukromého taxi">🚖 Private Taxi Calculator</h1>
+                <p style="color: #aaa; margin-bottom: 2rem;" data-en="Calculate the price for your taxi ride in Czech Republic" data-cs="Spočítejte si cenu za svou jízdu taxíkem v České republice">Calculate the price for your taxi ride in Czech Republic</p>
+                
+                <div class="calculator-form">
+                    <div class="input-group">
+                        <label for="startAddress" data-en="From (Starting Address):" data-cs="Z (Výchozí adresa):">From (Starting Address):</label>
+                        <input type="text" id="startAddress" placeholder="Enter starting address..." data-en-placeholder="Enter starting address..." data-cs-placeholder="Zadejte výchozí adresu..." />
+                        <div class="suggestions" id="startSuggestions"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="endAddress" data-en="To (Destination Address):" data-cs="Do (Cílová adresa):">To (Destination Address):</label>
+                        <input type="text" id="endAddress" placeholder="Enter destination address..." data-en-placeholder="Enter destination address..." data-cs-placeholder="Zadejte cílovou adresu..." />
+                        <div class="suggestions" id="endSuggestions"></div>
+                    </div>
+                    
+                    <button class="calculate-btn" onclick="calculatePrice()" data-en="Calculate Price" data-cs="Spočítat cenu">Calculate Price</button>
+                    
+                    <div class="results" id="results" style="display: none;">
+                        <div class="result-item">
+                            <span class="label" data-en="Distance:" data-cs="Vzdálenost:">Distance:</span>
+                            <span class="value" id="distance">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label" data-en="Rate:" data-cs="Sazba:">Rate:</span>
+                            <span class="value">3.32 CZK/km</span>
+                        </div>
+                        <div class="result-item total">
+                            <span class="label" data-en="Total Price:" data-cs="Celková cena:">Total Price:</span>
+                            <span class="value" id="totalPrice">-</span>
+                        </div>
+                        <div class="result-item processing-fee" id="processingFee" style="display: none;">
+                            <span class="label" data-en="Processing Fee (7 CZK + 1.25%):" data-cs="Poplatek za zpracování (7 CZK + 1,25%):">Processing Fee (7 CZK + 1.25%):</span>
+                            <span class="value" id="processingFeeAmount">-</span>
+                        </div>
+                        <div class="result-item final-total" id="finalTotal" style="display: none;">
+                            <span class="label" data-en="Final Amount (incl. processing):" data-cs="Konečná částka (včetně poplatku):">Final Amount (incl. processing):</span>
+                            <span class="value" id="finalTotalAmount">-</span>
+                        </div>
+                        
+                        <div class="payment-section" id="paymentSection" style="display: none;">
+                            <button class="payment-btn" onclick="proceedToPayment()" data-en="💳 Proceed to Payment (Revolut)" data-cs="💳 Přejít k platbě (Revolut)">
+                                💳 Proceed to Payment (Revolut)
+                            </button>
+                            <p class="payment-info" data-en="Secure payment via Revolut • Processing fee included" data-cs="Bezpečná platba přes Revolut • Poplatek za zpracování je zahrnut">Secure payment via Revolut • Processing fee included</p>
+                        </div>
+                    </div>
+                    
+                    <div class="loading" id="loading" style="display: none;">
+                        <div class="spinner"></div>
+                        <p data-en="Calculating route..." data-cs="Počítám trasu...">Calculating route...</p>
+                    </div>
+                    
+                    <div class="error" id="error" style="display: none;">
+                        <p data-en="❌ Could not calculate the route. Please check the addresses and try again." data-cs="❌ Nelze spočítat trasu. Zkontrolujte prosím adresy a zkuste to znovu.">❌ Could not calculate the route. Please check the addresses and try again.</p>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h3 data-en="📋 Information" data-cs="📋 Informace">📋 Information</h3>
+                    <ul>
+                        <li data-en="Rate: 3.32 CZK per kilometer" data-cs="Sazba: 3,32 CZK na kilometr">Rate: 3.32 CZK per kilometer</li>
+                        <li data-en="Prices include return journey costs" data-cs="Ceny zahrnují náklady na zpáteční cestu">Prices include return journey costs</li>
+                        <li data-en="Enter valid Czech addresses for accurate calculations" data-cs="Zadejte platné české adresy pro přesné výpočty">Enter valid Czech addresses for accurate calculations</li>
+                        <li data-en="This is not publicly available service, this only serves as a private tool to calculate how much should I charge friends." data-cs="Toto není veřejně dostupná služba, slouží pouze jako soukromý nástroj pro výpočet toho, kolik si mám účtovat od přátel.">This is not publicly available service, this only serves as a private tool to calculate how much should I charge friends.
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="card-footer">
+                    <span data-en="Private taxi service calculator by Maleka DEV 🚗" data-cs="Kalkulačka soukromého taxi od Maleka DEV 🚗">Private taxi service calculator by Maleka DEV 🚗</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

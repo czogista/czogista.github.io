@@ -1,0 +1,759 @@
+* {
+    user-select: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: radial-gradient(circle at center, #040C1C, #000);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.dots {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(#ffc107 1px, transparent 1px);
+    background-size: 20px 20px;
+    z-index: -1;
+    opacity: 0.15;
+}
+
+.maininfo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0;
+    z-index: 10;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    max-width: 400px;
+    text-align: center;
+}
+
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    background: url('../media/malekadev_icon.png') center/cover no-repeat;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    margin-bottom: 1rem;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #125FF8;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+h1:hover {
+    color: #00a9fe;
+}
+
+.title {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 1rem;
+}
+
+.title-suffix {
+    color: #aaa;
+}
+
+.back-button {
+    margin-top: 1rem;
+}
+
+.language-toggle {
+    margin-top: 0.5rem;
+}
+
+.lang-btn {
+    background: linear-gradient(45deg, #125FF8, #00a9fe);
+    border: none;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+}
+
+.lang-btn:hover {
+    background: linear-gradient(45deg, #0d44ff, #125FF8);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(18, 95, 248, 0.3);
+}
+
+.btn {
+    background: transparent;
+    border: 2px solid whitesmoke;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    font-family: 'Outfit', sans-serif;
+}
+
+.btn:hover {
+    background: #0d44ff;
+    color: whitesmoke;
+    border-color: #0d44ff;
+    font-weight: bold;
+}
+
+.main-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.card {
+    background-color: #1e1e1e;
+    padding: 2rem;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+    color: #fff;
+    text-align: center;
+}
+
+.card h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    color: cadetblue;
+}
+
+.card h3 {
+    color: #125FF8;
+    margin: 1.5rem 0 1rem 0;
+}
+
+.card p {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.calculator-form {
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #ccc;
+    font-weight: 500;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #333;
+    border-radius: 8px;
+    background: #2a2a2a;
+    color: #fff;
+    font-size: 1rem;
+    font-family: 'Outfit', sans-serif;
+    transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #125FF8;
+}
+
+.input-group input::placeholder {
+    color: #666;
+}
+
+.suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #2a2a2a;
+    border: 1px solid #333;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.suggestion-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #333;
+    transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover {
+    background-color: #333;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.calculate-btn {
+    width: 100%;
+    padding: 1rem 2rem;
+    background: linear-gradient(45deg, #125FF8, #00a9fe);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Outfit', sans-serif;
+    margin: 1rem 0;
+}
+
+.calculate-btn:hover {
+    background: linear-gradient(45deg, #0d44ff, #125FF8);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(18, 95, 248, 0.3);
+}
+
+.calculate-btn:active {
+    transform: translateY(0);
+}
+
+.results {
+    background: #2a2a2a;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-left: 4px solid #125FF8;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #333;
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-item.total {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #00a9fe;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 2px solid #333;
+}
+
+.result-item .label {
+    color: #ccc;
+}
+
+.result-item .value {
+    color: #fff;
+    font-weight: 500;
+}
+
+.result-item.processing-fee {
+    font-size: 0.95rem;
+    color: #ffa500;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #333;
+}
+
+.result-item.final-total {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #00ff88;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 2px solid #00ff88;
+    background: rgba(0, 255, 136, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.payment-section {
+    margin-top: 1.5rem;
+    text-align: center;
+    padding: 1rem;
+    background: rgba(18, 95, 248, 0.1);
+    border-radius: 12px;
+    border: 1px solid #125FF8;
+}
+
+.payment-btn {
+    width: 100%;
+    padding: 1rem 2rem;
+    background: linear-gradient(45deg, #7c4dff, #3f51b5);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Outfit', sans-serif;
+    margin-bottom: 0.5rem;
+}
+
+.payment-btn:hover {
+    background: linear-gradient(45deg, #6a1b9a, #303f9f);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+}
+
+.payment-btn:active {
+    transform: translateY(0);
+}
+
+.payment-info {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin: 0;
+    font-style: italic;
+}
+
+/* Payment Modal Styles */
+.payment-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    padding: 1rem;
+}
+
+.payment-modal {
+    background: #1e1e1e;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 2px solid #125FF8;
+}
+
+.payment-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #333;
+    background: #125FF8;
+    border-radius: 14px 14px 0 0;
+}
+
+.payment-modal-header h2 {
+    color: white;
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.payment-modal-content {
+    padding: 1.5rem;
+}
+
+.payment-amount-info {
+    background: rgba(255, 165, 0, 0.1);
+    border: 2px solid #ffa500;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.payment-amount-info h3 {
+    color: #ffa500;
+    margin: 0 0 0.5rem 0;
+}
+
+.amount-highlight {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #00ff88;
+    margin: 0.5rem 0;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.payment-route-info {
+    background: rgba(18, 95, 248, 0.1);
+    border: 1px solid #125FF8;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.payment-route-info h3 {
+    color: #125FF8;
+    margin: 0 0 1rem 0;
+}
+
+.map-links {
+    margin-bottom: 1rem;
+}
+
+.map-link-item {
+    margin-bottom: 1rem;
+}
+
+.map-link-item:last-child {
+    margin-bottom: 0.5rem;
+}
+
+.map-link-item label {
+    display: block;
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.link-box {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.link-box input {
+    flex: 1;
+    background: #2a2a2a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 0.75rem;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    font-weight: normal;
+}
+
+.coordinates-info {
+    background: #333;
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+}
+
+.coordinates-info small {
+    color: #aaa;
+    font-family: 'Courier New', monospace;
+}
+
+.copy-btn {
+    background: #125FF8;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.copy-btn:hover {
+    background: #0d44ff;
+    transform: translateY(-1px);
+}
+
+.link-instruction {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin: 0;
+    font-style: italic;
+}
+
+.route-summary {
+    background: #2a2a2a;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.route-summary h4 {
+    color: #ccc;
+    margin: 0 0 0.5rem 0;
+}
+
+.route-summary p {
+    margin: 0.25rem 0;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.payment-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.cancel-btn, .proceed-btn {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Outfit', sans-serif;
+}
+
+.cancel-btn {
+    background: #666;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: #555;
+}
+
+.proceed-btn {
+    background: linear-gradient(45deg, #7c4dff, #3f51b5);
+    color: white;
+}
+
+.proceed-btn:hover {
+    background: linear-gradient(45deg, #6a1b9a, #303f9f);
+    transform: translateY(-1px);
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: #ccc;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #333;
+    border-top: 4px solid #125FF8;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error {
+    background: #442;
+    border: 1px solid #644;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    color: #faa;
+    text-align: center;
+}
+
+.info-section {
+    background: #2a2a2a;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 2rem 0 1rem 0;
+    text-align: left;
+}
+
+.info-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.info-section li {
+    padding: 0.5rem 0;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+}
+
+.info-section li:before {
+    content: "✓";
+    color: #125FF8;
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+.card-footer {
+    margin-top: 1.5rem;
+    font-style: italic;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .maininfo {
+        padding: 1rem 0;
+    }
+    
+    .info {
+        padding: 0 1rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .main-content {
+        padding: 1rem;
+    }
+    
+    .card {
+        padding: 1.5rem;
+    }
+    
+    .card h1 {
+        font-size: 1.8rem;
+    }
+    
+    .result-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .result-item.total,
+    .result-item.final-total,
+    .result-item.processing-fee {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .payment-section {
+        margin-top: 1rem;
+        padding: 0.75rem;
+    }
+    
+    .payment-btn {
+        font-size: 1rem;
+        padding: 0.875rem 1.5rem;
+    }
+    
+    .payment-info {
+        font-size: 0.8rem;
+    }
+    
+    .payment-modal {
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem);
+    }
+    
+    .payment-modal-content {
+        padding: 1rem;
+    }
+    
+    .payment-modal-header {
+        padding: 1rem;
+    }
+    
+    .payment-modal-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .amount-highlight {
+        font-size: 1.5rem;
+    }
+    
+    .link-box {
+        flex-direction: column;
+    }
+    
+    .link-box input {
+        margin-bottom: 0.5rem;
+        font-size: 0.75rem;
+    }
+    
+    .map-link-item label {
+        font-size: 0.85rem;
+    }
+    
+    .payment-buttons {
+        flex-direction: column;
+    }
+    
+    .cancel-btn, .proceed-btn {
+        margin-bottom: 0.5rem;
+    }
+    
+    .dots {
+        background-size: 10px 10px;
+        opacity: 0.05;
+    }
+}
