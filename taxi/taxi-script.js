@@ -327,7 +327,7 @@ function calculateHaversineDistance(coord1, coord2) {
 // Remove the old fallback functions as we now use proper geocoding
 
 function displayResults(distanceKm) {
-    const rate = 3.57; // CZK per km
+    const rate = 3.67; // CZK per km
     // Important: Double the distance for return journey (200% as mentioned)
     const actualDistance = distanceKm * 2;
     const price = actualDistance * rate;
