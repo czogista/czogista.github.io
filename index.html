@@ -25,8 +25,16 @@
             <div class="profile-img" id="imgsubp"></div>
             <h1 onclick="reload()">Maleka DEV</h1>
             <div class="title">
-                <span class="title-suffix">by </span>
-                <span class="title-brand">Kacper M.</span><br />Junior Web Developer & IT Administrator
+                <span class="title-suffix" id="titleBy">by </span>
+                <span class="title-brand">Kacper M.</span><br /><span id="jobTitle">Junior Web Developer & IT Administrator</span>
+            </div>
+
+            <div class="language-switcher" id="langSwitcher">
+                <button class="lang-btn" id="langEn" data-lang="en">EN</button>
+                <button class="lang-btn locked" id="langCs" data-lang="cs" data-locked="true" title="Dostupné brzy / Coming soon">CS</button>
+                <button class="lang-btn locked" id="langPl" data-lang="pl" data-locked="true" title="Dostępne wkrótce / Coming soon">PL</button>
+                <span id="langSoonNote" style="font-size:0.65rem;color:#888;margin-left:0.35rem;">CS & PL coming soon</span>
+                <div id="langInfo" class="lang-info" style="display:none;" aria-live="polite"></div>
             </div>
 
 
@@ -44,15 +52,15 @@
     <div class="main-content" id="mainContent">
         <div class="block" id="aboutMeBlock" style="display: none;">
             <div class="card">
-                <h1>Hi, I’m <block id="maleka">Kacper</block> 👋</h1>
-                <p>
+                <h1 id="aboutMeTitle">Hi, I’m <block id="maleka">Kacper</block> 👋</h1>
+                <p id="aboutMeP1">
                     I’m a tech enthusiast with a strong background in web development, design, and IT solutions. My
                     programming journey began at the age of 12, starting with Scratch during school IT classes, and has
                     since grown into a deep passion for creating and managing websites, web applications, and databases.
                     In 2022, I successfully passed the <b>EE.08</b> / <b>INF.02</b> professional qualification exams,
                     further solidifying my technical skills.
                 </p>
-                <p>
+                <p id="aboutMeP2">
                     Since November 2024, I have been part of the <a href="https://rybizak.cz"
                         target="_blank">Rybízák</a> team as a sales stand operator, where I take care of customers,
                     handle transactions, prepare documentation for stock replenishment, and ensure smooth daily
@@ -60,18 +68,18 @@
                     cashier, operating both staffed and self-service checkouts, assisting customers, managing store
                     opening and closing procedures, and training new colleagues when needed.
                 </p>
-                <p>
+                <p id="aboutMeP3">
                     Outside my formal roles, I frequently help friends and neighbors with small tech-related tasks —
                     whether it’s reinstalling Windows, setting up applications, configuring security cameras, or
                     troubleshooting everyday PC issues. These experiences have sharpened my problem-solving abilities
                     and taught me the value of clear communication with both technical and non-technical users.
                 </p>
-                <p>
+                <p id="aboutMeP4">
                     I am fluent in Polish (native) and communicate effectively in English and Czech at an
                     upper-intermediate level (ILR scale 3–4). When I’m not coding or working, I enjoy gaming, running my
                     online community, exploring new technologies, and spending time with friends.
                 </p>
-                <div class="card-footer">
+                <div class="card-footer" id="aboutMeFooter">
                     That’s me in a nutshell. Thanks for stopping by 💙
                 </div>
             </div>
@@ -81,13 +89,13 @@
 
         <div class="block" id="projectsBlocks" style="display: none;">
             <div class="card" id="cardOfprojectsCard">
-                <h1>My projects?</h1>
-                <h4 style="font-size: 90%;">
+                <h1 id="projectsTitle">My projects?</h1>
+                <h4 style="font-size: 90%;" id="projectsIntro">
                     While I’m still growing as a developer, I have several projects I’m proud of and would like to
                     share.
                 </h4>
                 <h2 style="color: var(--nns)">NoName Squad</h2>
-                <h3>
+                <h3 id="nnsDesc">
                     NoName Squad is a <a href="https://discord.nnamesquad.top" target="_blank"
                         style="color: var(--nns);">Discord</a> community I founded in 2019. Over the years, it has grown
                     to nearly 100
@@ -96,7 +104,7 @@
                     serves as a hub for members to connect and stay updated.
                 </h3>
                 <h2 style="color: var(--flagbar);">FlagBar</h2>
-                <h3>
+                <h3 id="flagbarDesc">
                     FlagBar is a browser extension that adds the colors of various LGBTQ+ flags to YouTube for a
                     personalized, visually appealing experience. I created it initially as a fun project inspired by a
                     friend in the LGBTQ+ community, and soon realized it could be enjoyed by everyone. You can learn
@@ -104,8 +112,8 @@
                         style="color: var(--flagbar);">flagbar.nnamesquad.top</a>.
                 </h3>
                 <div class="card-footer">
-                    <p><b>Perhaps more in the future..</b><br>until then, you can support me and buy me a coffee if you
-                        like my work!
+                    <p>
+                        <span id="projectsFooterText"><b>Perhaps more in the future..</b><br>until then, you can support me and buy me a coffee if you like my work!</span>
                         <script style="all: initial;" type="text/javascript"
                             src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button"
                             data-slug="czogista" data-color="#5F7FFF" data-emoji="☕" data-font="Poppins"
@@ -120,11 +128,11 @@
 
         <div class="block" id="contactBlock" style="display: none;">
             <div class="card">
-                <h1 class="discord">Contact</h1>
-                <p style="font-size: large;">
+                <h1 class="discord" id="contactTitle">Contact</h1>
+                <p style="font-size: large;" id="contactMsg">
                     Feel free to contact me anytime at <a href="mailto:contact@maleka.dev">contact@maleka.dev</a>.
                 </p>
-                <div class="card-footer">
+                <div class="card-footer" id="contactFooter">
                     I will reply as soon as possible, though my response may come from my personal address for
                     convenience.
                 </div>
@@ -134,19 +142,19 @@
 
         <div class="block" id="hiremeBlock" style="display: none;">
             <div class="card">
-                <h1>Small Tech Jobs & Web Projects</h1>
-                <h3>
+                <h1 id="hiremeTitle">Small Tech Jobs & Web Projects</h1>
+                <h3 id="hiremeP1">
                     I am available for a wide range of tech-related work, from website and web app development to
                     database setup, IT equipment installation, and general PC support. Whether you need help
                     troubleshooting an issue, setting up a system, or building a new online presence, I provide
                     reliable, personalized assistance tailored to your needs.
                 </h3>
-                <h3>
+                <h3 id="hiremeP2">
                     I hold a professional qualification in <b>EE.08</b> and <b>INF.02</b> (Web Development,
                     Applications, and Database Management), passed in 2022. This certification ensures that my work
                     meets recognized professional standards, whether for personal projects or professional engagements.
                 </h3>
-                <h3>
+                <h3 id="hiremeP3">
                     My services include developing and managing websites, installing and configuring software, setting
                     up networks or security devices, and providing general IT support. If you have a project in mind or
                     a tech issue that needs solving, please get in touch via the <span>“Contact”</span> tab, and I will
