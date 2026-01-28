@@ -198,6 +198,68 @@ h1:hover {
     transition: border-color 0.3s ease;
 }
 
+.input-group select {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #333;
+    border-radius: 8px;
+    background: #2a2a2a;
+    color: #fff;
+    font-size: 1rem;
+    font-family: 'Outfit', sans-serif;
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+}
+
+.input-group select:focus {
+    outline: none;
+    border-color: #125FF8;
+}
+
+.journey-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23fff" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5.25 7.5l4.25 4.25L13.75 7.5h-8.5z"></path></svg>');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    padding-right: 3rem;
+    flex: 1;
+}
+
+.journey-controls {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.cheaper-ride-btn {
+    padding: 1rem 1.25rem;
+    border: 2px solid #333;
+    border-radius: 8px;
+    background: #2a2a2a;
+    color: #fff;
+    font-size: 0.9rem;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.cheaper-ride-btn:hover {
+    border-color: #555;
+    background: #333;
+}
+
+.cheaper-ride-btn.active {
+    border-color: #ffc107;
+    background: #ffc107;
+    color: #000;
+    font-weight: 600;
+}
+
 .input-group input:focus {
     outline: none;
     border-color: #125FF8;

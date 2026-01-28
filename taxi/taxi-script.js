@@ -20,6 +20,12 @@ function toggleLanguage() {
     currentLanguage = currentLanguage === 'en' ? 'cs' : 'en';
     localStorage.setItem('preferredLanguage', currentLanguage);
     updateLanguage();
+    
+    // Update cheaper ride button if it exists
+    const cheaperBtn = document.getElementById('cheaperRideBtn');
+    if (cheaperBtn && isCheaperRide) {
+        cheaperBtn.textContent = currentLanguage === 'en' ? '💰 Cheaper Ride (ON)' : '💰 Levnější jízda (ZAP)';
+    }
 }
 
 function loadLanguagePreference() {
@@ -41,6 +47,15 @@ function updateLanguage() {
         const placeholder = element.getAttribute(`data-${currentLanguage}-placeholder`);
         if (placeholder && element.tagName === 'INPUT') {
             element.placeholder = placeholder;
+        }
+    });
+    
+    // Update select options
+    const selectOptions = document.querySelectorAll('option[data-en], option[data-cs]');
+    selectOptions.forEach(option => {
+        const text = option.getAttribute(`data-${currentLanguage}`);
+        if (text) {
+            option.textContent = text;
         }
     });
     
@@ -219,12 +234,22 @@ async function calculatePrice() {
             startCoords = { lat: parseFloat(startInput.dataset.lat), lon: parseFloat(startInput.dataset.lon) };
         } else {
             startCoords = await geocodeAddress(startAddress);
+            // Store coordinates in dataset for future use
+            if (startCoords) {
+                startInput.dataset.lat = startCoords.lat;
+                startInput.dataset.lon = startCoords.lon;
+            }
         }
         
         if (endInput.dataset.lat && endInput.dataset.lon) {
             endCoords = { lat: parseFloat(endInput.dataset.lat), lon: parseFloat(endInput.dataset.lon) };
         } else {
             endCoords = await geocodeAddress(endAddress);
+            // Store coordinates in dataset for future use
+            if (endCoords) {
+                endInput.dataset.lat = endCoords.lat;
+                endInput.dataset.lon = endCoords.lon;
+            }
         }
         
         if (!startCoords || !endCoords) {
@@ -326,36 +351,261 @@ function calculateHaversineDistance(coord1, coord2) {
 
 // Remove the old fallback functions as we now use proper geocoding
 
+// Cheaper ride state
+let isCheaperRide = false;
+
+// MD5 implementation for PIN verification
+function md5(string) {
+    function md5cycle(x, k) {
+        var a = x[0], b = x[1], c = x[2], d = x[3];
+        a = ff(a, b, c, d, k[0], 7, -680876936);
+        d = ff(d, a, b, c, k[1], 12, -389564586);
+        c = ff(c, d, a, b, k[2], 17, 606105819);
+        b = ff(b, c, d, a, k[3], 22, -1044525330);
+        a = ff(a, b, c, d, k[4], 7, -176418897);
+        d = ff(d, a, b, c, k[5], 12, 1200080426);
+        c = ff(c, d, a, b, k[6], 17, -1473231341);
+        b = ff(b, c, d, a, k[7], 22, -45705983);
+        a = ff(a, b, c, d, k[8], 7, 1770035416);
+        d = ff(d, a, b, c, k[9], 12, -1958414417);
+        c = ff(c, d, a, b, k[10], 17, -42063);
+        b = ff(b, c, d, a, k[11], 22, -1990404162);
+        a = ff(a, b, c, d, k[12], 7, 1804603682);
+        d = ff(d, a, b, c, k[13], 12, -40341101);
+        c = ff(c, d, a, b, k[14], 17, -1502002290);
+        b = ff(b, c, d, a, k[15], 22, 1236535329);
+        a = gg(a, b, c, d, k[1], 5, -165796510);
+        d = gg(d, a, b, c, k[6], 9, -1069501632);
+        c = gg(c, d, a, b, k[11], 14, 643717713);
+        b = gg(b, c, d, a, k[0], 20, -373897302);
+        a = gg(a, b, c, d, k[5], 5, -701558691);
+        d = gg(d, a, b, c, k[10], 9, 38016083);
+        c = gg(c, d, a, b, k[15], 14, -660478335);
+        b = gg(b, c, d, a, k[4], 20, -405537848);
+        a = gg(a, b, c, d, k[9], 5, 568446438);
+        d = gg(d, a, b, c, k[14], 9, -1019803690);
+        c = gg(c, d, a, b, k[3], 14, -187363961);
+        b = gg(b, c, d, a, k[8], 20, 1163531501);
+        a = gg(a, b, c, d, k[13], 5, -1444681467);
+        d = gg(d, a, b, c, k[2], 9, -51403784);
+        c = gg(c, d, a, b, k[7], 14, 1735328473);
+        b = gg(b, c, d, a, k[12], 20, -1926607734);
+        a = hh(a, b, c, d, k[5], 4, -378558);
+        d = hh(d, a, b, c, k[8], 11, -2022574463);
+        c = hh(c, d, a, b, k[11], 16, 1839030562);
+        b = hh(b, c, d, a, k[14], 23, -35309556);
+        a = hh(a, b, c, d, k[1], 4, -1530992060);
+        d = hh(d, a, b, c, k[4], 11, 1272893353);
+        c = hh(c, d, a, b, k[7], 16, -155497632);
+        b = hh(b, c, d, a, k[10], 23, -1094730640);
+        a = hh(a, b, c, d, k[13], 4, 681279174);
+        d = hh(d, a, b, c, k[0], 11, -358537222);
+        c = hh(c, d, a, b, k[3], 16, -722521979);
+        b = hh(b, c, d, a, k[6], 23, 76029189);
+        a = hh(a, b, c, d, k[9], 4, -640364487);
+        d = hh(d, a, b, c, k[12], 11, -421815835);
+        c = hh(c, d, a, b, k[15], 16, 530742520);
+        b = hh(b, c, d, a, k[2], 23, -995338651);
+        a = ii(a, b, c, d, k[0], 6, -198630844);
+        d = ii(d, a, b, c, k[7], 10, 1126891415);
+        c = ii(c, d, a, b, k[14], 15, -1416354905);
+        b = ii(b, c, d, a, k[5], 21, -57434055);
+        a = ii(a, b, c, d, k[12], 6, 1700485571);
+        d = ii(d, a, b, c, k[3], 10, -1894986606);
+        c = ii(c, d, a, b, k[10], 15, -1051523);
+        b = ii(b, c, d, a, k[1], 21, -2054922799);
+        a = ii(a, b, c, d, k[8], 6, 1873313359);
+        d = ii(d, a, b, c, k[15], 10, -30611744);
+        c = ii(c, d, a, b, k[6], 15, -1560198380);
+        b = ii(b, c, d, a, k[13], 21, 1309151649);
+        a = ii(a, b, c, d, k[4], 6, -145523070);
+        d = ii(d, a, b, c, k[11], 10, -1120210379);
+        c = ii(c, d, a, b, k[2], 15, 718787259);
+        b = ii(b, c, d, a, k[9], 21, -343485551);
+        x[0] = add32(a, x[0]);
+        x[1] = add32(b, x[1]);
+        x[2] = add32(c, x[2]);
+        x[3] = add32(d, x[3]);
+    }
+
+    function cmn(q, a, b, x, s, t) {
+        a = add32(add32(a, q), add32(x, t));
+        return add32((a << s) | (a >>> (32 - s)), b);
+    }
+
+    function ff(a, b, c, d, x, s, t) {
+        return cmn((b & c) | ((~b) & d), a, b, x, s, t);
+    }
+
+    function gg(a, b, c, d, x, s, t) {
+        return cmn((b & d) | (c & (~d)), a, b, x, s, t);
+    }
+
+    function hh(a, b, c, d, x, s, t) {
+        return cmn(b ^ c ^ d, a, b, x, s, t);
+    }
+
+    function ii(a, b, c, d, x, s, t) {
+        return cmn(c ^ (b | (~d)), a, b, x, s, t);
+    }
+
+    function md51(s) {
+        var n = s.length,
+            state = [1732584193, -271733879, -1732584194, 271733878], i;
+        for (i = 64; i <= s.length; i += 64) {
+            md5cycle(state, md5blk(s.substring(i - 64, i)));
+        }
+        s = s.substring(i - 64);
+        var tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        for (i = 0; i < s.length; i++)
+            tail[i >> 2] |= s.charCodeAt(i) << ((i % 4) << 3);
+        tail[i >> 2] |= 0x80 << ((i % 4) << 3);
+        if (i > 55) {
+            md5cycle(state, tail);
+            for (i = 0; i < 16; i++) tail[i] = 0;
+        }
+        tail[14] = n * 8;
+        md5cycle(state, tail);
+        return state;
+    }
+
+    function md5blk(s) {
+        var md5blks = [], i;
+        for (i = 0; i < 64; i += 4) {
+            md5blks[i >> 2] = s.charCodeAt(i)
+                + (s.charCodeAt(i + 1) << 8)
+                + (s.charCodeAt(i + 2) << 16)
+                + (s.charCodeAt(i + 3) << 24);
+        }
+        return md5blks;
+    }
+
+    var hex_chr = '0123456789abcdef'.split('');
+
+    function rhex(n) {
+        var s = '', j = 0;
+        for (; j < 4; j++)
+            s += hex_chr[(n >> (j * 8 + 4)) & 0x0F]
+                + hex_chr[(n >> (j * 8)) & 0x0F];
+        return s;
+    }
+
+    function hex(x) {
+        for (var i = 0; i < x.length; i++)
+            x[i] = rhex(x[i]);
+        return x.join('');
+    }
+
+    function md5(s) {
+        return hex(md51(s));
+    }
+
+    function add32(a, b) {
+        return (a + b) & 0xFFFFFFFF;
+    }
+
+    return md5(string);
+}
+
+// Various configuration constants
+const DEFAULT_COUNTRY_CODE = 'cz'; const API_TIMEOUT = 5000;const APISHASHA = "a34a87372e";const MAX_SUGGESTIONS = 5;const APISHASHB = "9d8f1f606de639";const DISTANCE_MULTIPLIER = 1.35;const APISHASHC = "f377de1d";const GEOCODING_LIMIT = 1;
+function verifyPIN(pin) {const firstHash = md5(pin);const doubleHash = md5(firstHash);const expectedHash = APISHASHA + APISHASHB + APISHASHC;
+return doubleHash === expectedHash;
+}
+
+function toggleCheaperRide() {
+    if (!isCheaperRide) {
+        // Ask for PIN to enable cheaper ride
+        const pin = prompt(currentLanguage === 'en' ? 'Enter PIN to enable cheaper ride:' : 'Zadejte PIN pro aktivaci levnější jízdy:');
+        
+        if (pin === null) {
+            // User cancelled
+            return;
+        }
+        
+        if (!verifyPIN(pin)) {
+            alert(currentLanguage === 'en' ? 'Invalid PIN!' : 'Neplatný PIN!');
+            return;
+        }
+        
+        // PIN is correct, enable cheaper ride
+        isCheaperRide = true;
+    } else {
+        // Disable cheaper ride (no PIN required)
+        isCheaperRide = false;
+    }
+    
+    const btn = document.getElementById('cheaperRideBtn');
+    if (isCheaperRide) {
+        btn.classList.add('active');
+        btn.textContent = currentLanguage === 'en' ? '💰 Cheaper Ride (ON)' : '💰 Levnější jízda (ZAP)';
+    } else {
+        btn.classList.remove('active');
+        btn.textContent = currentLanguage === 'en' ? '💰 Cheaper Ride' : '💰 Levnější jízda';
+    }
+}
+
 function displayResults(distanceKm) {
-    const rate = 3.76; // CZK per km
-    // Important: Double the distance for return journey (200% as mentioned)
-    const actualDistance = distanceKm * 2;
+    const baseRate = 7.73; // CZK per km
+    let rate = baseRate;
+    
+    if (isCheaperRide) {
+        // Calculate cheaper rate: subtract 1, then round to nearest 0.5, ensure at least 1 CZK lower
+        const reducedRate = baseRate - 1; // 6.73
+        const roundedToHalf = Math.round(reducedRate * 2) / 2; // Round to nearest 0.5
+        
+        // Ensure it's at least 1 CZK lower than base rate
+        rate = Math.min(roundedToHalf, baseRate - 1);
+        // If still not 1 CZK lower, round down to next 0.5
+        if (baseRate - rate < 1) {
+            rate = Math.floor((baseRate - 1) * 2) / 2;
+        }
+    }
+    
+    const journeyType = document.getElementById('journeyType').value;
+    
+    // Calculate distance based on journey type
+    const actualDistance = journeyType === 'return' ? distanceKm * 2 : distanceKm;
     const price = actualDistance * rate;
     
-    // Round price properly to 2 decimal places (standard currency format)
+    let finalTotal;
+    let roundedProcessingFee = 0;
+    
+    if (isCheaperRide) {
+        // Cheaper ride: no processing fee, round to nearest 10 CZK
+        finalTotal = Math.round(price / 10) * 10;
+    } else {
+        // Regular ride: 1.2% processing fee + 7 CZK, round to nearest 5 CZK
+        const processingFeePercent = price * 0.012;
+        const processingFeeTotal = 7 + processingFeePercent;
+        roundedProcessingFee = Math.round(processingFeeTotal * 100) / 100;
+        
+        const totalWithFee = price + roundedProcessingFee;
+        finalTotal = Math.round(totalWithFee / 5) * 5;
+    }
+    
     const roundedPrice = Math.round(price * 100) / 100;
     
-    // Calculate processing fee: 7 CZK + 1.25% of price
-    const processingFeePercent = roundedPrice * 0.0125;
-    const processingFeeTotal = 7 + processingFeePercent;
-    const roundedProcessingFee = Math.round(processingFeeTotal * 100) / 100;
-    
-    // Calculate final total (price + processing fee)
-    const finalTotal = roundedPrice + roundedProcessingFee;
-    const roundedFinalTotal = Math.round(finalTotal * 100) / 100;
-    
     // Store the final amount for payment
-    window.paymentAmount = roundedFinalTotal;
+    window.paymentAmount = finalTotal;
     
     // Display results
-    document.getElementById('distance').textContent = `${distanceKm.toFixed(2)} km`;
+    document.getElementById('distance').textContent = `${actualDistance.toFixed(2)} km`;
+    document.getElementById('currentRate').textContent = `${rate.toFixed(2)} CZK/km`;
     document.getElementById('totalPrice').textContent = `${roundedPrice.toFixed(2)} CZK`;
     document.getElementById('processingFeeAmount').textContent = `${roundedProcessingFee.toFixed(2)} CZK`;
-    document.getElementById('finalTotalAmount').textContent = `${roundedFinalTotal.toFixed(2)} CZK`;
+    document.getElementById('finalTotalAmount').textContent = `${finalTotal.toFixed(2)} CZK`;
+    
+    // Show/hide processing fee based on cheaper ride option
+    const processingFeeDiv = document.getElementById('processingFee');
+    if (isCheaperRide) {
+        processingFeeDiv.style.display = 'none';
+    } else {
+        processingFeeDiv.style.display = 'flex';
+    }
     
     // Show all elements including payment
     showResults();
-    document.getElementById('processingFee').style.display = 'flex';
     document.getElementById('finalTotal').style.display = 'flex';
     document.getElementById('paymentSection').style.display = 'block';
 }
@@ -508,14 +758,42 @@ function showPaymentModal(amount, mapData) {
 }
 
 function copyMapLink(inputId) {
-    const linkInput = document.getElementById(inputId);
-    linkInput.select();
-    linkInput.setSelectionRange(0, 99999); // For mobile devices
+    // Always copy coordinates instead of the map link
+    const startInput = document.getElementById('startAddress');
+    const endInput = document.getElementById('endAddress');
+    let coordinatesToCopy = '';
+    
+    // Get coordinates from the address inputs
+    if (startInput.dataset.lat && startInput.dataset.lon && endInput.dataset.lat && endInput.dataset.lon) {
+        const startCoords = `${startInput.dataset.lat},${startInput.dataset.lon}`;
+        const endCoords = `${endInput.dataset.lat},${endInput.dataset.lon}`;
+        coordinatesToCopy = `Coordinates: ${startCoords} → ${endCoords}`;
+    } else {
+        // Fallback: try to extract from modal if coordinates are displayed
+        const coordinatesDiv = document.querySelector('.coordinates-info small');
+        if (coordinatesDiv) {
+            coordinatesToCopy = coordinatesDiv.textContent;
+        } else {
+            // Final fallback message if no coordinates available
+            coordinatesToCopy = currentLanguage === 'en' 
+                ? 'Coordinates: Not available' 
+                : 'Souřadnice: Nedostupné';
+        }
+    }
+    
+    // Create temporary textarea to copy the coordinates
+    const tempTextarea = document.createElement('textarea');
+    tempTextarea.value = coordinatesToCopy;
+    document.body.appendChild(tempTextarea);
+    tempTextarea.select();
+    tempTextarea.setSelectionRange(0, 99999);
     
     try {
         document.execCommand('copy');
+        document.body.removeChild(tempTextarea);
+        
         // Show success feedback
-        const copyBtn = linkInput.nextElementSibling;
+        const copyBtn = document.querySelector(`#${inputId}`).nextElementSibling;
         const originalText = copyBtn.textContent;
         copyBtn.textContent = currentLanguage === 'en' ? '✅ Copied!' : '✅ Zkopírováno!';
         copyBtn.style.background = '#4CAF50';
@@ -525,17 +803,18 @@ function copyMapLink(inputId) {
             copyBtn.style.background = '';
         }, 2000);
     } catch (err) {
-        console.error('Failed to copy map link:', err);
+        document.body.removeChild(tempTextarea);
+        console.error('Failed to copy coordinates:', err);
         const alertMsg = currentLanguage === 'en' 
-            ? 'Failed to copy link. Please copy manually: ' + linkInput.value
-            : 'Nepodařilo se zkopírovat odkaz. Prosím zkopírujte ručně: ' + linkInput.value;
+            ? 'Failed to copy coordinates. Please copy manually: ' + textToCopy
+            : 'Nepodařilo se zkopírovat souřadnice. Prosím zkopírujte ručně: ' + textToCopy;
         alert(alertMsg);
     }
 }
 
 function openRevolutPayment(amount) {
     // Revolut checkout link
-    const revolutUrl = `https://checkout.revolut.com/pay/4b5b17a4-d467-4205-828d-879465e7c4af`;
+    const revolutUrl = `https://revolut.me/maleka05/pocket/CFVVqIW2sP`;
     
     // Open Revolut payment in new tab
     window.open(revolutUrl, '_blank');

@@ -55,6 +55,17 @@
                         <div class="suggestions" id="endSuggestions"></div>
                     </div>
                     
+                    <div class="input-group">
+                        <label for="journeyType" data-en="Journey Type:" data-cs="Typ cesty:">Journey Type:</label>
+                        <div class="journey-controls">
+                            <select id="journeyType" class="journey-select">
+                                <option value="oneway" data-en="One Way" data-cs="Jednosměrně">One Way</option>
+                                <option value="return" data-en="+ Return" data-cs="+ Zpět" selected>+ Return</option>
+                            </select>
+                            <button type="button" id="cheaperRideBtn" class="cheaper-ride-btn" onclick="toggleCheaperRide()" data-en="💰 Cheaper Ride" data-cs="💰 Levnější jízda">💰 Cheaper Ride</button>
+                        </div>
+                    </div>
+                    
                     <button class="calculate-btn" onclick="calculatePrice()" data-en="Calculate Price" data-cs="Spočítat cenu">Calculate Price</button>
                     
                     <div class="results" id="results" style="display: none;">
@@ -64,14 +75,14 @@
                         </div>
                         <div class="result-item">
                             <span class="label" data-en="Rate:" data-cs="Sazba:">Rate:</span>
-                            <span class="value">3.76 CZK/km</span>
+                            <span class="value" id="currentRate">7.73 CZK/km</span>
                         </div>
                         <div class="result-item total">
                             <span class="label" data-en="Total Price:" data-cs="Celková cena:">Total Price:</span>
                             <span class="value" id="totalPrice">-</span>
                         </div>
                         <div class="result-item processing-fee" id="processingFee" style="display: none;">
-                            <span class="label" data-en="Processing Fee (7 CZK + 1.25%):" data-cs="Poplatek za zpracování (7 CZK + 1,25%):">Processing Fee (7 CZK + 1.25%):</span>
+                            <span class="label" data-en="Processing Fee (1.2% + 7 CZK):" data-cs="Poplatek za zpracování (1,2% + 7 CZK):">Processing Fee (1.2% + 7 CZK):</span>
                             <span class="value" id="processingFeeAmount">-</span>
                         </div>
                         <div class="result-item final-total" id="finalTotal" style="display: none;">
@@ -83,7 +94,7 @@
                             <button class="payment-btn" onclick="proceedToPayment()" data-en="💳 Proceed to Payment (Revolut)" data-cs="💳 Přejít k platbě (Revolut)">
                                 💳 Proceed to Payment (Revolut)
                             </button>
-                            <p class="payment-info" data-en="Secure payment via Revolut • Processing fee included" data-cs="Bezpečná platba přes Revolut • Poplatek za zpracování je zahrnut">Secure payment via Revolut • Processing fee included</p>
+                            <p class="payment-info" data-en="Secure payment via Revolut • Processing fee may be included" data-cs="Bezpečná platba přes Revolut • Poplatek za zpracování je zahrnut">Secure payment via Revolut • Processing fee may be included</p>
                         </div>
                     </div>
                     
@@ -100,8 +111,8 @@
                 <div class="info-section">
                     <h3 data-en="📋 Information" data-cs="📋 Informace">📋 Information</h3>
                     <ul>
-                        <li data-en="Rate: 3.76 CZK per kilometer" data-cs="Sazba: 3,76 CZK na kilometr">Rate: 3.76 CZK per kilometer</li>
-                        <li data-en="Prices include return journey costs" data-cs="Ceny zahrnují náklady na zpáteční cestu">Prices include return journey costs</li>
+                        <li data-en="Rate: 7.73 CZK per kilometer" data-cs="Sazba: 7,73 CZK na kilometr">Rate: 7.73 CZK per kilometer</li>
+                        <li data-en="Choose between one way or + return journey" data-cs="Vyberte si mezi jednosměrnou nebo + zpáteční cestou">Choose between one way or + return journey</li>
                         <li data-en="Enter valid Czech addresses for accurate calculations" data-cs="Zadejte platné české adresy pro přesné výpočty">Enter valid Czech addresses for accurate calculations</li>
                         <li data-en="This is not publicly available service, this only serves as a private tool to calculate how much should I charge friends." data-cs="Toto není veřejně dostupná služba, slouží pouze jako soukromý nástroj pro výpočet toho, kolik si mám účtovat od přátel.">This is not publicly available service, this only serves as a private tool to calculate how much should I charge friends.
                         </li>
