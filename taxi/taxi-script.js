@@ -1,79 +1,13 @@
 // Taxi Calculator JavaScript using OpenStreetMap/Nominatim (no API key needed)
 let debounceTimer;
 
-// Language state
-let currentLanguage = 'en'; // Default to English US
-
 // Initialize the page when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     setupAddressAutocomplete();
-    loadLanguagePreference();
-    updateLanguage();
 });
 
 function goHome() {
     window.location.href = 'https://maleka.dev/';
-}
-
-// Language switching functionality
-function toggleLanguage() {
-    currentLanguage = currentLanguage === 'en' ? 'cs' : 'en';
-    localStorage.setItem('preferredLanguage', currentLanguage);
-    updateLanguage();
-    
-    // Update cheaper ride button if it exists
-    const cheaperBtn = document.getElementById('cheaperRideBtn');
-    if (cheaperBtn && isCheaperRide) {
-        cheaperBtn.textContent = currentLanguage === 'en' ? '💰 Cheaper Ride (ON)' : '💰 Levnější jízda (ZAP)';
-    }
-}
-
-function loadLanguagePreference() {
-    const saved = localStorage.getItem('preferredLanguage');
-    if (saved && (saved === 'en' || saved === 'cs')) {
-        currentLanguage = saved;
-    }
-}
-
-function updateLanguage() {
-    const elements = document.querySelectorAll('[data-en], [data-cs]');
-    elements.forEach(element => {
-        const text = element.getAttribute(`data-${currentLanguage}`);
-        if (text) {
-            element.textContent = text;
-        }
-        
-        // Handle placeholders for input elements
-        const placeholder = element.getAttribute(`data-${currentLanguage}-placeholder`);
-        if (placeholder && element.tagName === 'INPUT') {
-            element.placeholder = placeholder;
-        }
-    });
-    
-    // Update select options
-    const selectOptions = document.querySelectorAll('option[data-en], option[data-cs]');
-    selectOptions.forEach(option => {
-        const text = option.getAttribute(`data-${currentLanguage}`);
-        if (text) {
-            option.textContent = text;
-        }
-    });
-    
-    // Update language toggle button
-    const langToggle = document.getElementById('langToggle');
-    if (langToggle) {
-        if (currentLanguage === 'en') {
-            langToggle.textContent = '🇨🇿 Čeština';
-        } else {
-            langToggle.textContent = '🇺🇸 English';
-        }
-    }
-    
-    // Update HTML lang attribute and page title  
-    document.documentElement.lang = currentLanguage === 'en' ? 'en-US' : 'cs';
-    document.title = currentLanguage === 'en' 
-        ? 'Private Taxi Calculator - Maleka DEV'
-        : 'Kalkulačka soukromého taxi - Maleka DEV';
 }
 
 function setupAddressAutocomplete() {
@@ -217,10 +151,7 @@ async function calculatePrice() {
     hideError();
     
     if (!startAddress || !endAddress) {
-        const errorMsg = currentLanguage === 'en' 
-            ? 'Please enter both starting address and destination.'
-            : 'Prosím zadejte jak výchozí, tak cílovou adresu.';
-        showError(errorMsg);
+        showError('Please enter both starting address and destination.');
         return;
     }
     
@@ -274,10 +205,7 @@ async function calculatePrice() {
     } catch (error) {
         console.error('Calculation error:', error);
         hideLoading();
-        const errorMsg = currentLanguage === 'en' 
-            ? 'Could not calculate the route. Please check the addresses and try again.'
-            : 'Nelze spočítat trasu. Zkontrolujte prosím adresy a zkuste to znovu.';
-        showError(errorMsg);
+        showError('Could not calculate the route. Please check the addresses and try again.');
     }
 }
 
@@ -516,7 +444,7 @@ return doubleHash === expectedHash;
 function toggleCheaperRide() {
     if (!isCheaperRide) {
         // Ask for PIN to enable cheaper ride
-        const pin = prompt(currentLanguage === 'en' ? 'Enter PIN to enable cheaper ride:' : 'Zadejte PIN pro aktivaci levnější jízdy:');
+        const pin = prompt('Enter PIN to enable cheaper ride:');
         
         if (pin === null) {
             // User cancelled
@@ -524,7 +452,7 @@ function toggleCheaperRide() {
         }
         
         if (!verifyPIN(pin)) {
-            alert(currentLanguage === 'en' ? 'Invalid PIN!' : 'Neplatný PIN!');
+            alert('Invalid PIN!');
             return;
         }
         
@@ -538,15 +466,15 @@ function toggleCheaperRide() {
     const btn = document.getElementById('cheaperRideBtn');
     if (isCheaperRide) {
         btn.classList.add('active');
-        btn.textContent = currentLanguage === 'en' ? '💰 Cheaper Ride (ON)' : '💰 Levnější jízda (ZAP)';
+        btn.textContent = '💰 Cheaper Ride (ON)';
     } else {
         btn.classList.remove('active');
-        btn.textContent = currentLanguage === 'en' ? '💰 Cheaper Ride' : '💰 Levnější jízda';
+        btn.textContent = '💰 Cheaper Ride';
     }
 }
 
 function displayResults(distanceKm) {
-    const baseRate = 7.73; // CZK per km
+    const baseRate = 8.5562; // CZK per km
     let rate = baseRate;
     
     if (isCheaperRide) {
@@ -632,10 +560,7 @@ function hideResults() {
 
 function proceedToPayment() {
     if (!window.paymentAmount) {
-        const errorMsg = currentLanguage === 'en' 
-            ? 'Please calculate the price first before proceeding to payment.'
-            : 'Prosím nejprve spočítejte cenu před přejitím k platbě.';
-        showError(errorMsg);
+        showError('Please calculate the price first before proceeding to payment.');
         return;
     }
     
@@ -708,46 +633,46 @@ function showPaymentModal(amount, mapData) {
     modal.innerHTML = `
         <div class="payment-modal">
             <div class="payment-modal-header">
-                <h2>${currentLanguage === 'en' ? '💳 Payment for Ride' : '💳 Platba za jízdu'}</h2>
+                <h2>💳 Payment for Ride</h2>
                 <button class="modal-close" onclick="closePaymentModal()">&times;</button>
             </div>
             <div class="payment-modal-content">
                 <div class="payment-amount-info">
-                    <h3>${currentLanguage === 'en' ? '⚠️ IMPORTANT - Amount to Pay:' : '⚠️ DŮLEŽITÉ - Částka k platbě:'}</h3>
+                    <h3>⚠️ IMPORTANT - Amount to Pay:</h3>
                     <div class="amount-highlight">${amount.toFixed(2)} CZK</div>
-                    <p>${currentLanguage === 'en' ? 'Make sure you enter exactly this amount in the Revolut payment form!' : 'Ujistěte se, že zadáte přesně tuto částku ve formuláři platby Revolut!'}</p>
+                    <p>Make sure you enter exactly this amount in the Revolut payment form!</p>
                 </div>
                 
                 <div class="payment-route-info">
-                    <h3>${currentLanguage === 'en' ? '🗺️ Route Link (enter in payment description):' : '🗺️ Odkaz na trasu (zadejte do popisu platby):'}</h3>
+                    <h3>🗺️ Route Link (enter in payment description):</h3>
                     <div class="map-links">
                         <div class="map-link-item">
-                            <label>${currentLanguage === 'en' ? 'OpenStreetMap (exact route):' : 'OpenStreetMap (přesná trasa):'}</label>
+                            <label>OpenStreetMap (exact route):</label>
                             <div class="link-box">
                                 <input type="text" id="osmMapLink" value="${mapData.mapLink}" readonly>
-                                <button class="copy-btn" onclick="copyMapLink('osmMapLink')">${currentLanguage === 'en' ? '📋 Copy' : '📋 Kopírovat'}</button>
+                                <button class="copy-btn" onclick="copyMapLink('osmMapLink')">📋 Copy</button>
                             </div>
                         </div>
                         ${mapData.coordinates ? `
                         <div class="coordinates-info">
-                            <small><strong>${currentLanguage === 'en' ? 'Coordinates:' : 'Souřadnice:'}</strong> ${mapData.coordinates}</small>
+                            <small><strong>Coordinates:</strong> ${mapData.coordinates}</small>
                         </div>
                         ` : ''}
                     </div>
-                    <p class="link-instruction">${currentLanguage === 'en' ? 'Copy the link and paste it in the "description" or "note" field when making the Revolut payment. The link will help identify the ride route.' : 'Zkopírujte odkaz a vložte jej do pole "popis" nebo "poznámka" při platbě přes Revolut. Odkaz pomůže identifikovat trasu jízdy.'}</p>
+                    <p class="link-instruction">Copy the link and paste it in the "description" or "note" field when making the Revolut payment. The link will help identify the ride route.</p>
                 </div>
                 
                 <div class="route-summary">
-                    <h4>${currentLanguage === 'en' ? '📍 Route Summary:' : '📍 Shrnutí trasy:'}</h4>
-                    <p><strong>${currentLanguage === 'en' ? 'From:' : 'Z:'}</strong> ${document.getElementById('startAddress').value}</p>
-                    <p><strong>${currentLanguage === 'en' ? 'To:' : 'Do:'}</strong> ${document.getElementById('endAddress').value}</p>
-                    <p><strong>${currentLanguage === 'en' ? 'Distance:' : 'Vzdálenost:'}</strong> ${document.getElementById('distance').textContent}</p>
+                    <h4>📍 Route Summary:</h4>
+                    <p><strong>From:</strong> ${document.getElementById('startAddress').value}</p>
+                    <p><strong>To:</strong> ${document.getElementById('endAddress').value}</p>
+                    <p><strong>Distance:</strong> ${document.getElementById('distance').textContent}</p>
                 </div>
                 
                 <div class="payment-buttons">
-                    <button class="cancel-btn" onclick="closePaymentModal()">${currentLanguage === 'en' ? '❌ Cancel' : '❌ Zrušit'}</button>
+                    <button class="cancel-btn" onclick="closePaymentModal()">❌ Cancel</button>
                     <button class="proceed-btn" onclick="openRevolutPayment('${amount}')">
-                        ${currentLanguage === 'en' ? '💳 Go to Revolut' : '💳 Přejít na Revolut'}
+                        💳 Go to Revolut
                     </button>
                 </div>
             </div>
@@ -775,9 +700,7 @@ function copyMapLink(inputId) {
             coordinatesToCopy = coordinatesDiv.textContent;
         } else {
             // Final fallback message if no coordinates available
-            coordinatesToCopy = currentLanguage === 'en' 
-                ? 'Coordinates: Not available' 
-                : 'Souřadnice: Nedostupné';
+            coordinatesToCopy = 'Coordinates: Not available';
         }
     }
     
@@ -795,20 +718,17 @@ function copyMapLink(inputId) {
         // Show success feedback
         const copyBtn = document.querySelector(`#${inputId}`).nextElementSibling;
         const originalText = copyBtn.textContent;
-        copyBtn.textContent = currentLanguage === 'en' ? '✅ Copied!' : '✅ Zkopírováno!';
+        copyBtn.textContent = '✅ Copied!';
         copyBtn.style.background = '#4CAF50';
         
         setTimeout(() => {
             copyBtn.textContent = originalText;
-            copyBtn.style.background = '';
+            copyBtn.style.background = '#125FF8';
         }, 2000);
     } catch (err) {
         document.body.removeChild(tempTextarea);
         console.error('Failed to copy coordinates:', err);
-        const alertMsg = currentLanguage === 'en' 
-            ? 'Failed to copy coordinates. Please copy manually: ' + textToCopy
-            : 'Nepodařilo se zkopírovat souřadnice. Prosím zkopírujte ručně: ' + textToCopy;
-        alert(alertMsg);
+        alert('Failed to copy coordinates. Please copy manually: ' + coordinatesToCopy);
     }
 }
 
