@@ -474,7 +474,7 @@ function toggleCheaperRide() {
 }
 
 function displayResults(distanceKm) {
-    const baseRate = 8.5562; // CZK per km
+    const baseRate = 7.3684; // CZK per km
     let rate = baseRate;
     
     if (isCheaperRide) {
