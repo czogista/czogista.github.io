@@ -474,20 +474,13 @@ function toggleCheaperRide() {
 }
 
 function displayResults(distanceKm) {
-    const baseRate = 7.3684; // CZK per km
+    const baseRate = 7.2471; // CZK per km (724.71 CZK/100km)
+    const cheaperRate = 4.3024; // CZK per km (430.24 CZK/100km)
     let rate = baseRate;
     
     if (isCheaperRide) {
-        // Calculate cheaper rate: subtract 1, then round to nearest 0.5, ensure at least 1 CZK lower
-        const reducedRate = baseRate - 1; // 6.73
-        const roundedToHalf = Math.round(reducedRate * 2) / 2; // Round to nearest 0.5
-        
-        // Ensure it's at least 1 CZK lower than base rate
-        rate = Math.min(roundedToHalf, baseRate - 1);
-        // If still not 1 CZK lower, round down to next 0.5
-        if (baseRate - rate < 1) {
-            rate = Math.floor((baseRate - 1) * 2) / 2;
-        }
+        // Use the cheaper rate directly
+        rate = cheaperRate;
     }
     
     const journeyType = document.getElementById('journeyType').value;
