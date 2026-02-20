@@ -474,8 +474,8 @@ function toggleCheaperRide() {
 }
 
 function displayResults(distanceKm) {
-    const baseRate = 7.2471; // CZK per km (724.71 CZK/100km)
-    const cheaperRate = 4.3024; // CZK per km (430.24 CZK/100km)
+    const baseRate = 5.2647; // CZK per km (526.47 CZK/100km)
+    const cheaperRate = 4.0647; // CZK per km (406.47 CZK/100km)
     let rate = baseRate;
     
     if (isCheaperRide) {
