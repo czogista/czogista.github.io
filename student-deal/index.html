@@ -1,328 +1,192 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="pl">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Deal - Web pro tvoj startup</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maleka DEV - Oferta Studencka | Student Web Development</title>
+    <meta name="description"
+        content="Specjalna oferta dla studentów i uczniów - profesjonalne strony internetowe w przystępnej cenie. Modernistyczne, responsywne strony dla młodych przedsiębiorców.">
+    <meta name="keywords" content="student offer, web developer, cheap website, startup, student budget, web development">
+    <link rel="icon" type="image/png" href="../media/malekadev_icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="student-style.css">
 </head>
+
 <body>
-    <div class="stars"></div>
-    
-    <header class="header">
-        <div class="container">
-            <nav class="navbar">
-                <div class="logo">
-                    <svg class="logo-icon" viewBox="0 0 40 40" width="40" height="40">
-                        <rect x="8" y="8" width="24" height="24" fill="none" stroke="#00ff00" stroke-width="1" rx="4"/>
-                        <circle cx="20" cy="14" r="3" fill="#00ff00"/>
-                        <path d="M 20 20 L 20 28" stroke="#00ff00" stroke-width="1" stroke-linecap="round"/>
-                    </svg>
-                    <span>StartupWeb by MalekaDEV</span>
+    <!-- Animated background elements -->
+    <div class="background-container">
+        <div class="stars"></div>
+        <div class="floating-particles"></div>
+        <div class="gradient-orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="header" id="header">
+        <div class="header-content">
+            <div class="logo-container">
+                <div class="profile-img" id="profileImg">
+                    <img src="../media/malekadev_icon.png" alt="Maleka DEV Profile" class="profile-image">
                 </div>
-                <ul class="nav-links">
-                    <li><a href="#nabidka">Nabídka</a></li>
-                    <li><a href="#popis">O nás</a></li>
-                    <li><a href="#kontakt">Kontakt</a></li>
-                </ul>
-            </nav>
+                <div class="brand-info">
+                    <h1 class="brand-name" onclick="goHome()">
+                        <span class="brand-text">Maleka</span>
+                        <span class="brand-accent">DEV</span>
+                    </h1>
+                    <div class="title-info">
+                        <span class="title-suffix" id="titleBy">autor: </span>
+                        <span class="title-brand">Kacper M.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Language switcher -->
+            <div class="language-switcher" id="langSwitcher">
+                <button class="lang-btn" id="langEn" data-lang="en">EN</button>
+                <button class="lang-btn" id="langCs" data-lang="cs">CS</button>
+                <button class="lang-btn active" id="langPl" data-lang="pl">PL</button>
+                <div id="langInfo" class="lang-info" style="display:none;" aria-live="polite"></div>
+            </div>
         </div>
     </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <svg class="badge-icon" viewBox="0 0 24 24" width="24" height="24">
-                        <path d="M12 2L15 10H23L17 15L19 23L12 18L5 23L7 15L1 10H9L12 2Z" fill="#00ff00"/>
-                    </svg>
-                    Skončil jsi střední?
+    <!-- Main content area -->
+    <main class="main-container" id="mainContainer">
+        <!-- Hero section -->
+        <section class="hero-section student-hero" id="heroSection">
+            <div class="student-content">
+                <div class="student-badge">
+                    <span class="badge-text" id="badgeText">💡 Oferta Studencka</span>
                 </div>
                 
-                <h1 class="hero-title">
-                    Máš nápad na <span class="neon-green">vlastní projekt</span> nebo <span class="neon-green">startup</span>?
-                </h1>
-                
-                <p class="hero-subtitle">
-                    Jestli nejsi online,<br>
-                    <span class="neon-yellow">jako bys neexistoval.</span>
-                </p>
-                
-                <p class="hero-description">
-                    My ti vytvoříme moderní web, který ti pomůže tvůj sen odstartovat. Speciální ceny pro studenty!
-                </p>
-                
-                <a href="#nabidka" class="cta-button">Zjisti více</a>
-            </div>
-            
-            <div class="hero-decoration">
-                <div class="rocket"></div>
-                <div class="glow-sphere glow-purple"></div>
-                <div class="glow-sphere glow-green"></div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="features" id="nabidka">
-            <div class="container">
-                <h2 class="section-title">Co ti nabízíme</h2>
-                
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" width="48" height="48">
-                                <rect x="2" y="3" width="20" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                                <path d="M6 21H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                        </div>
-                        <h3>Moderní web</h3>
-                        <p>Vytvoříme ti designový web, který zaujme a funguje na všech zařízeních</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" width="48" height="48">
-                                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-                                <path d="M12 6V12L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                        </div>
-                        <h3>Mobilní optimalizace</h3>
-                        <p>Tvůj web bude perfektní na mobilu a tabletu - tam tě budou hledat zákazníci</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" width="48" height="48">
-                                <path d="M7 10L12 15L22 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <h3>SEO optimalizace</h3>
-                        <p>Budeš vidět v Googlu - to je důležité pro tvůj byznys od začátku</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" width="48" height="48">
-                                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-                                <path d="M8 12L11 15L16 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <h3>Profesionální přístup</h3>
-                        <p>Nasloucháme tvým potřebám a vytvoříme přesně to, co potřebuješ</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" width="48" height="48">
-                                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-                                <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <h3>Pokud jsi student</h3>
-                        <p>Máš slovu - dostaneš speciální slevu a podporu během realizace</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <svg viewBox="0 0 24 24" width="48" height="48">
-                                <path d="M12 2L20 7V17C20 22 12 24 12 24C12 24 4 22 4 17V7L12 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                <path d="M10 12L12 14L16 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <h3>Bezpečnost</h3>
-                        <p>Tvoje data a data tvých zákazníků jsou v bezpečí. Stojíme za svou prací</p>
-                    </div>
+                <div class="student-header">
+                    <h2 class="student-title" id="studentTitle">
+                        Kończysz szkołę średnią? Masz pomysł na swój projekt bądź startup?
+                    </h2>
+                    <p class="student-subtitle" id="studentSubtitle">
+                        Musisz mieć swoją stronę internetową, jeśli nie jesteś online, to tak jakby cię nie było
+                    </p>
                 </div>
-            </div>
-        </section>
 
-        <!-- Pricing Section -->
-        <section class="pricing" id="cena">
-            <div class="container">
-                <h2 class="section-title">Ceny pro studenty</h2>
-                
-                <div class="pricing-grid">
-                    <div class="pricing-card starter">
-                        <h3>Startovní web</h3>
-                        <div class="price">
-                            <span class="amount">4 999 Kč</span>
-                            <span class="period">jedenkrát</span>
-                        </div>
-                        <ul class="features-list">
-                            <li>Moderní responsivní design</li>
-                            <li>Až 5 stránek</li>
-                            <li>Optimalizace pro mobil</li>
-                            <li>Základní SEO</li>
-                            <li>1 měsíc podpory</li>
-                        </ul>
-                        <button class="pricing-btn">Začneme!</button>
-                    </div>
-                    
-                    <div class="pricing-card professional featured">
-                        <div class="featured-badge">Nejpopulárnější</div>
-                        <h3>Profesionální web</h3>
-                        <div class="price">
-                            <span class="amount">8 999 Kč</span>
-                            <span class="period">jedenkrát</span>
-                        </div>
-                        <ul class="features-list">
-                            <li>Vlastní design od nuly</li>
-                            <li>Neomezené stránky</li>
-                            <li>Blog integrován</li>
-                            <li>Pokročilé SEO</li>
-                            <li>3 měsíce podpory</li>
-                            <li>Úpravy obsahu zdarma</li>
-                        </ul>
-                        <button class="pricing-btn">Chci to!</button>
-                    </div>
-                    
-                    <div class="pricing-card enterprise">
-                        <h3>E-shop řešení</h3>
-                        <div class="price">
-                            <span class="amount">od 12 999 Kč</span>
-                            <span class="period">jedenkrát</span>
-                        </div>
-                        <ul class="features-list">
-                            <li>Plnohodnotný e-shop</li>
-                            <li>Platební brána</li>
-                            <li>Správa inventáře</li>
-                            <li>Pokročilé SEO</li>
-                            <li>6 měsíců podpory</li>
-                            <li>Školení zdarma</li>
-                        </ul>
-                        <button class="pricing-btn">Chci více info</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Info Section -->
-        <section class="info" id="popis">
-            <div class="container">
-                <h2 class="section-title">Proč my?</h2>
-                
-                <div class="info-content">
-                    <div class="info-text">
-                        <h3>Pochopíme tvůj nápad</h3>
-                        <p>Jsme mladí a chápeme, co studenti potřebují. Nejste pro nás jen číslo v tabulce - chceme, aby tvůj projekt uspěl.</p>
-                        
-                        <h3>Máme zkušenosti</h3>
-                        <p>Už jsme pomohli desítkám studentů a mladých podnikatelů. Víme, co funguje a co ne.</p>
-                        
-                        <h3>Ceny pro studenty</h3>
-                        <p>Dostaneš speciální slevu 20-30% a flexibilní platby. Vímě, že peníze nejsou nazbyt.</p>
-                        
-                        <h3>Dlouhodobá podpora</h3>
-                        <p>Není to "udělám a zmizím". Budeme tu i po spuštění, aby vše fungovalo jak má.</p>
-                    </div>
-                    
-                    <div class="info-visual">
-                        <div class="rocket-animation">
-                            <svg viewBox="0 0 100 200" width="200" height="300">
-                                <!-- Rocket body -->
-                                <ellipse cx="50" cy="80" rx="20" ry="40" fill="#00ff00" opacity="0.8"/>
-                                <!-- Rocket nose -->
-                                <polygon points="50,20 40,50 60,50" fill="#ff00ff" opacity="0.8"/>
-                                <!-- Rocket fins -->
-                                <polygon points="30,100 20,140 40,130" fill="#00ffff" opacity="0.8"/>
-                                <polygon points="70,100 80,140 60,130" fill="#00ffff" opacity="0.8"/>
-                                <!-- Window -->
-                                <circle cx="50" cy="50" r="8" fill="#ffff00" opacity="0.8"/>
-                                <!-- Flames -->
-                                <polygon points="40,140 50,180 60,140 55,150 50,170 45,150" fill="#ff6600" opacity="0.6" class="flame"/>
-                            </svg>
+                <div class="student-pitch">
+                    <div class="pitch-card">
+                        <h3 class="pitch-title" id="pitchTitle">Dlaczego właśnie ja?</h3>
+                        <div class="pitch-content">
+                            <p id="pitchDescription">
+                                Nie jestem wielką firmą - jestem tylko ja sam, <strong>Kacper</strong>, nastolatek taki jak ty. 
+                                Zrobię dla ciebie modernistyczną stronę na miarę twoich potrzeb tylko za pomocą opisu bądź projektu. 
+                                Będzie działać na komputerach i telefonach, będzie czytelna, prosta i profesjonalna.
+                            </p>
+                            <p id="pitchMission">
+                                Jeśli masz pomysł, pomogę ci pokazać go światu! 🌟
+                            </p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- CTA Section -->
-        <section class="cta-section">
-            <div class="container">
-                <h2>Pojď si to nenechat ujít!</h2>
-                <p>Tvůj konkurent si už web objednal. Budeš pozadu?</p>
-                <div class="cta-buttons">
-                    <a href="#kontakt" class="btn-primary">Napsat nám</a>
-                    <a href="https://wa.me/420" class="btn-secondary">WhatsApp</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section class="contact" id="kontakt">
-            <div class="container">
-                <h2 class="section-title">Kontaktujem nás</h2>
-                
-                <div class="contact-content">
-                    <div class="contact-info">
-                        <div class="contact-item">
-                            <svg class="contact-icon" viewBox="0 0 24 24" width="32" height="32">
-                                <path d="M3 8L10.89 13.26C11.54 13.76 12.46 13.76 13.11 13.26L21 8M5 19H19C20.1 19 21 18.1 21 17V7C21 5.9 20.1 5 19 5H5C3.9 5 3 5.9 3 7V17C3 18.1 3.9 19 5 19Z" fill="none" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                            <div>
-                                <h4>Email</h4>
-                                <p><a href="mailto:info@startup-web.cz">info@startup-web.cz</a></p>
+                    <div class="pricing-overview">
+                        <h3 class="pricing-title" id="pricingTitle">Cennik dostosowany do studenta</h3>
+                        <div class="pricing-cards">
+                            <div class="pricing-card basic">
+                                <div class="pricing-header">
+                                    <h4 id="basicTitle">Podstawowy</h4>
+                                    <p class="pricing-desc" id="basicDesc">Idealna na początek</p>
+                                </div>
+                                <div class="pricing-features">
+                                    <ul id="basicFeatures">
+                                        <li>HTML, CSS & JavaScript</li>
+                                        <li>Darmowy certyfikat SSL</li>
+                                        <li>Do 5GB przestrzeni</li>
+                                        <li>Do 20 subdomen</li>
+                                    </ul>
+                                </div>
+                                <div class="pricing-note">
+                                    <div class="pricing-fee" id="basicNote">Wycena za 20 PLN</div>
+                                    <div class="pricing-free" id="basicFree">Z ważną legitymacją ISIC/ELS za darmo</div>
+                                </div>
+                            </div>
+                            <div class="pricing-card premium">
+                                <div class="pricing-header">
+                                    <h4 id="premiumTitle">Rozszerzony</h4>
+                                    <p class="pricing-desc" id="premiumDesc">Dla większych projektów</p>
+                                </div>
+                                <div class="pricing-features">
+                                    <ul id="premiumFeatures">
+                                        <li>Wszystko z planu podstawowego +</li>
+                                        <li>PHP 7.4 i 8.0</li>
+                                        <li>MySQL, SFTP i SSH</li>
+                                        <li>Do 20GB przestrzeni</li>
+                                        <li>Do 50 subdomen</li>
+                                        <li>Darmowe konto email w domenie</li>
+                                        <li>Konfiguracja Cloudflare (darmowy plan)</li>
+                                    </ul>
+                                </div>
+                                <div class="pricing-note">
+                                    <div class="pricing-fee" id="premiumNote">Wycena za 20 PLN</div>
+                                    <div class="pricing-free" id="premiumFree">Z ważną legitymacją ISIC/ELS za darmo</div>
+                                </div>
                             </div>
                         </div>
+                        <p class="pricing-info" id="pricingInfo">
+                            <strong>Niska marża + przystosowana do studenckiego budżetu</strong><br>
+                            Wycena zawsze na miarę twoich potrzeb i możliwości finansowych
+                        </p>
                         
-                        <div class="contact-item">
-                            <svg class="contact-icon" viewBox="0 0 24 24" width="32" height="32">
-                                <path d="M17 10.5V7C17 6.45 16.55 6 16 6H8C7.45 6 7 6.45 7 7V10.5M4 12H20M7 15H7.01M11 15H11.01M15 15H15.01M6.5 19H17.5C18.88 19 20 17.88 20 16.5V9.5C20 8.12 18.88 7 17.5 7H6.5C5.12 7 4 8.12 4 9.5V16.5C4 17.88 5.12 19 6.5 19Z" fill="none" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                            <div>
-                                <h4>Telefon</h4>
-                                <p><a href="tel:+420777123456">+420 777 123 456</a></p>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item">
-                            <svg class="contact-icon" viewBox="0 0 24 24" width="32" height="32">
-                                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-                                <path d="M12 7V12L15 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                            <div>
-                                <h4>Pracovní doba</h4>
-                                <p>Po-Pá: 10:00 - 18:00</p>
+                        <div class="hosting-info">
+                            <h4 class="hosting-title" id="hostingTitle">Informacje o kosztach utrzymania</h4>
+                            <div class="hosting-details">
+                                <p id="hostingDescription">
+                                    Opłata za utrzymanie strony online jest rozliczana każdorazowo za rok z góry. 
+                                    Stworzenie strony to jednorazowa część opłaty wliczona w pierwszy rok kosztów utrzymania.
+                                </p>
+                                <div class="changes-info">
+                                    <div class="basic-changes" id="basicChanges">
+                                        <strong>Plan Podstawowy:</strong> Zmiany na stronie - mała symboliczna opłata jednorazowa
+                                    </div>
+                                    <div class="premium-changes" id="premiumChanges">
+                                        <strong>Plan Rozszerzony:</strong> Mniejsze zmiany/aktualizacje darmowe
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <form class="contact-form">
-                        <input type="text" placeholder="Tvoje jméno" required>
-                        <input type="email" placeholder="Tvůj email" required>
-                        <textarea placeholder="Popis tvého projektu..." rows="5" required></textarea>
-                        <button type="submit" class="btn-submit">Poslat zprávu</button>
-                    </form>
                 </div>
-            </div>
-        </section>
 
-        <!-- QR Code Section -->
-        <section class="qr-section">
-            <div class="container">
-                <h3>Sdílej tento web se svými kamarády!</h3>
-                <div class="qr-code-wrapper">
-                    <svg viewBox="0 0 100 100" width="200" height="200" class="qr-placeholder">
-                        <rect width="100" height="100" fill="#ffffff"/>
-                        <text x="50" y="50" font-size="8" text-anchor="middle" fill="#000000">Nahraď si QR kód</text>
-                    </svg>
+                <div class="cta-section">
+                    <div class="cta-content">
+                        <h3 class="cta-title" id="ctaTitle">Zainteresowany?</h3>
+                        <p class="cta-description" id="ctaDescription">
+                            Napisz na email i opowiedz mi o swoim projekcie!
+                        </p>
+                        <a href="mailto:hello@maleka.dev?subject=Zapytanie%20o%20ofert%C4%99%20studeck%C4%85" 
+                           class="btn btn-primary btn-contact" id="contactButton">
+                            <span class="btn-text" id="contactButtonText">hello@maleka.dev</span>
+                            <div class="btn-glow"></div>
+                        </a>
+                        <p class="email-note" id="emailNote">
+                            Temat wiadomości: "Zapytanie o ofertę studencką"
+                        </p>
+                    </div>
+                </div>
+
+                <div class="back-link">
+                    <a href="../" class="back-btn" id="backButton">
+                        ← Powrót do głównej strony
+                    </a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 StartupWeb. Všechna práva vyhrazena.</p>
-            <div class="footer-links">
-                <a href="#obchodni">Obchodní podmínky</a>
-                <a href="#ochrana">Ochrana osobních údajů</a>
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+    <script src="student-script.js"></script>
 </body>
+
 </html>
