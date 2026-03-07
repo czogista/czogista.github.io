@@ -681,6 +681,38 @@ a:hover {
     box-shadow: var(--shadow-medium);
 }
 
+.btn-accent {
+    background: linear-gradient(135deg, var(--accent-purple), var(--primary-blue));
+    color: white;
+    box-shadow: var(--shadow-medium);
+    position: relative;
+}
+
+.btn-accent::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-smooth);
+    z-index: -1;
+}
+
+.btn-accent:hover::before {
+    opacity: 1;
+}
+
+.btn-accent:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        var(--shadow-large),
+        0 0 30px rgba(139, 92, 246, 0.5);
+}
+
+.btn-accent:hover .btn-glow {
+    transform: translateX(100%);
+}
+
 .btn-text {
     position: relative;
     z-index: 3;
@@ -901,9 +933,36 @@ a:hover {
     transform: translateX(5px);
 }
 
+/* About Section Styles */
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-xl);
+    align-items: start;
+}
+
+.about-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.skills-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
 .skills-showcase {
     position: sticky;
     top: var(--space-lg);
+}
+
+/* Increase section container width for about section */
+#aboutMeSection .section-container {
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .skills-title {
@@ -952,6 +1011,105 @@ a:hover {
 .skill-progress[data-level="75"] { width: 75%; }
 .skill-progress[data-level="80"] { width: 80%; }
 .skill-progress[data-level="95"] { width: 95%; }
+
+/* Thanks Showcase Section */
+.thanks-showcase {
+    position: sticky;
+    top: calc(var(--space-lg) + 400px);
+}
+
+.thanks-title {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.thanks-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.thanks-grid::-webkit-scrollbar {
+    width: 4px;
+}
+
+.thanks-grid::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 2px;
+}
+
+.thanks-grid::-webkit-scrollbar-thumb {
+    background: var(--primary-blue);
+    border-radius: 2px;
+}
+
+.thanks-grid::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-cyan);
+}
+
+.thanks-item {
+    background: var(--bg-glass);
+    padding: var(--space-sm);
+    border-radius: 10px;
+    border: 1px solid var(--border-secondary);
+    transition: all 0.2s var(--ease-smooth);
+    margin-top: 5px;
+}
+
+.thanks-item:hover {
+    border-color: var(--primary-blue);
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+.thanks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.supporter-name {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.coffee-count {
+    font-size: 0.8rem;
+    color: var(--accent-cyan);
+    font-weight: 600;
+}
+
+.supporter-comment {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    font-style: italic;
+    line-height: 1.4;
+    margin-top: 0.25rem;
+}
+
+.thanks-comment {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+    font-style: italic;
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--border-secondary);
+    opacity: 0.8;
+    transition: opacity 0.3s var(--ease-smooth);
+}
+
+.thanks-comment:hover {
+    opacity: 1;
+    color: var(--accent-cyan);
+}
 
 /* Projects Section */
 .projects-grid {
@@ -1390,6 +1548,55 @@ a:hover {
     
     .social-links {
         gap: var(--space-xs);
+    }
+    
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+    }
+    
+    .skills-sidebar {
+        gap: var(--space-md);
+    }
+    
+    .skills-showcase,
+    .thanks-showcase {
+        position: static;
+    }
+    
+    #aboutMeSection .section-container {
+        max-width: none;
+    }
+    
+    .thanks-grid {
+        max-height: 300px;
+        gap: var(--space-xs);
+    }
+    
+    .thanks-item {
+        padding: var(--space-xs);
+    }
+    
+    .supporter-name {
+        font-size: 0.8rem;
+    }
+    
+    .coffee-count {
+        font-size: 0.7rem;
+    }
+    
+    .supporter-comment {
+        font-size: 0.75rem;
+    }
+    
+    .thanks-comment {
+        font-size: 0.8rem;
+        margin-top: var(--space-xs);
+        padding-top: var(--space-xs);
+    }
+    
+    .thanks-title {
+        font-size: 1.1rem;
     }
 }
 

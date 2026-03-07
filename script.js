@@ -725,7 +725,8 @@ function initializeLanguageSystem() {
             about: 'About me', 
             projects: 'My projects', 
             contact: 'Get in touch', 
-            hireme: 'IT Support / Hire me' 
+            hireme: 'IT Support / Hire me',
+            student: 'Student Offer'
         },
         about: {
             titleHTML: 'Hi, I\'m <span class="highlight">Kacper</span> 👋',
@@ -735,6 +736,7 @@ function initializeLanguageSystem() {
             p4: 'I am fluent in Polish (native) and communicate effectively in English and Czech at an upper-intermediate level (ILR scale 3–4). When I\'m not coding or working, I enjoy gaming, running my online community, exploring new technologies, and spending time with friends.',
             footer: 'That\'s me in a nutshell. Thanks for stopping by 💙'
         },
+        thanksTitle: 'Coffee Supporters ☕',
         projects: {
             title: 'My projects?',
             intro: 'While I\'m still growing as a developer, I have several projects I\'m proud of and would like to share.',
@@ -771,7 +773,8 @@ function initializeLanguageSystem() {
             about: 'O mně', 
             projects: 'Moje projekty', 
             contact: 'Kontaktujte mě', 
-            hireme: 'IT podpora / Najměte mě' 
+            hireme: 'IT podpora / Najměte mě',
+            student: 'Studentská nabídka'
         },
         about: {
             titleHTML: 'Ahoj, jsem <span class="highlight">Kacper</span> 👋',
@@ -781,6 +784,7 @@ function initializeLanguageSystem() {
             p4: 'Plynně mluvím polsky (rodilý jazyk) a anglicky i česky komunikuji na vyšší středně pokročilé úrovni (ILR 3–4). Když zrovna neprogramuji ani nepracuji, rád hraji hry, starám se o svou online komunitu, zkouším nové technologie a trávím čas s přáteli.',
             footer: 'To jsem já v kostce. Díky za návštěvu 💙'
         },
+        thanksTitle: 'Podporovatelé kávy ☕',
         projects: {
             title: 'Moje projekty?',
             intro: 'I když se jako vývojář stále posouvám, mám několik projektů, na které jsem hrdý a rád se o ně podělím.',
@@ -817,7 +821,8 @@ function initializeLanguageSystem() {
             about: 'O mnie', 
             projects: 'Moje projekty', 
             contact: 'Skontaktuj się', 
-            hireme: 'Wsparcie IT / Zatrudnij mnie' 
+            hireme: 'Wsparcie IT / Zatrudnij mnie',
+            student: 'Oferta studencka'
         },
         about: {
             titleHTML: 'Cześć, jestem <span class="highlight">Kacper</span> 👋',
@@ -827,6 +832,7 @@ function initializeLanguageSystem() {
             p4: 'Posługuję się biegle językiem polskim (ojczysty), a po angielsku i czesku komunikuję się na poziomie wyższym średnio zaawansowanym (ILR 3–4). Poza pracą i kodowaniem lubię gry, prowadzenie społeczności online, poznawanie nowych technologii i czas spędzany ze znajomymi.',
             footer: 'To ja w pigułce. Dzięki za odwiedziny 💙'
         },
+        thanksTitle: 'Wspierający kawą ☕',
         projects: {
             title: 'Moje projekty?',
             intro: 'Choć wciąż się rozwijam jako programista, mam kilka projektów, z których jestem dumny i chętnie je pokażę.',
@@ -895,7 +901,8 @@ function initializeLanguageSystem() {
         // Buttons
         const buttonElements = {
             'aboutMeButton': t.buttons.about,
-            'contactButton': t.buttons.contact
+            'contactButton': t.buttons.contact,
+            'studentOfferButton': t.buttons.student
         };
 
         Object.entries(buttonElements).forEach(([id, text]) => {
@@ -906,6 +913,12 @@ function initializeLanguageSystem() {
                 else el.textContent = text;
             }
         });
+
+        // Thanks title
+        const thanksTitle = document.getElementById('thanksTitle');
+        if (thanksTitle) {
+            thanksTitle.textContent = t.thanksTitle;
+        }
 
         // About me section
         const aboutElements = {

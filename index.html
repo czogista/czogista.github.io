@@ -14,7 +14,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    <link id="stylesheet" rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="coffee-supporters.js"></script>
     <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
         data-id="czogista" data-description="Support me on Buy me a coffee!"
         data-message="Would you like to support my work? I would be very grateful!" data-color="#5F7FFF"
@@ -95,6 +96,10 @@
                         </button>
                         <button class="btn btn-secondary" onclick="showSection('contact')" id="contactButton">
                             <span class="btn-text">Get in touch</span>
+                        </button>
+                        <button class="btn btn-accent" onclick="window.location.href='student-deal/'" id="studentOfferButton">
+                            <span class="btn-text">Student Offer</span>
+                            <div class="btn-glow"></div>
                         </button>
                     </div>
                 </div>
@@ -200,33 +205,43 @@
                             </div>
                         </div>
 
-                        <div class="skills-showcase">
-                            <h3 class="skills-title">Tech Stack</h3>
-                            <div class="skills-grid">
-                                <div class="skill-item">
-                                    <span class="skill-name">HTML/CSS</span>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" data-level="90"></div>
+                        <div class="skills-sidebar">
+                            <div class="skills-showcase">
+                                <h3 class="skills-title">Tech Stack</h3>
+                                <div class="skills-grid">
+                                    <div class="skill-item">
+                                        <span class="skill-name">HTML/CSS</span>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress" data-level="90"></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <span class="skill-name">JavaScript</span>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress" data-level="75"></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <span class="skill-name">Database Management</span>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress" data-level="80"></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <span class="skill-name">IT Support</span>
+                                        <div class="skill-bar">
+                                            <div class="skill-progress" data-level="95"></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="skill-item">
-                                    <span class="skill-name">JavaScript</span>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" data-level="75"></div>
-                                    </div>
+                            </div>
+
+                            <div class="thanks-showcase">
+                                <h3 class="thanks-title" id="thanksTitle">Coffee Supporters ☕</h3>
+                                <div class="thanks-grid" id="thanksGrid">
+                                    <!-- Coffee supporters will be loaded dynamically -->
                                 </div>
-                                <div class="skill-item">
-                                    <span class="skill-name">Database Management</span>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" data-level="80"></div>
-                                    </div>
-                                </div>
-                                <div class="skill-item">
-                                    <span class="skill-name">IT Support</span>
-                                    <div class="skill-bar">
-                                        <div class="skill-progress" data-level="95"></div>
-                                    </div>
-                                </div>
+                                <p class="thanks-comment" id="thanksComment">Maybe you'll be next! ☕</p>
                             </div>
                         </div>
                     </div>
