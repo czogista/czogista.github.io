@@ -1,10 +1,13 @@
-// Taxi Calculator JavaScript using OpenStreetMap/Nominatim (no API key needed)
+// PFR Calculator JavaScript using OpenStreetMap/Nominatim (no API key needed)
 let debounceTimer;
 
 // Initialize the page when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     setupAddressAutocomplete();
 });
+
+// Calculation mode state
+let calculationMode = 'address'; // 'address' or 'manual'
 
 function goHome() {
     window.location.href = 'https://maleka.dev/';
@@ -55,7 +58,7 @@ async function searchAddresses(query, suggestionsId, input) {
         
         const response = await fetch(url, {
             headers: {
-                'User-Agent': 'TaxiCalculator/1.0 (https://maleka.dev)', // Required by Nominatim
+                'User-Agent': 'PFR/1.0 (https://maleka.dev)', // Required by Nominatim
                 'Accept-Language': 'en-US,en;q=0.9,cs;q=0.8' // Prefer English, then Czech
             }
         });
@@ -141,14 +144,19 @@ function hideSuggestions(suggestionsId) {
 }
 
 async function calculatePrice() {
+    // Hide previous results
+    hideResults();
+    hideError();
+    
+    if (calculationMode === 'manual') {
+        calculateManualPrice();
+        return;
+    }
+    
     const startInput = document.getElementById('startAddress');
     const endInput = document.getElementById('endAddress');
     const startAddress = startInput.value.trim();
     const endAddress = endInput.value.trim();
-    
-    // Hide previous results
-    hideResults();
-    hideError();
     
     if (!startAddress || !endAddress) {
         showError('Please enter both starting address and destination.');
@@ -215,7 +223,7 @@ async function geocodeAddress(address) {
         
         const response = await fetch(url, {
             headers: {
-                'User-Agent': 'TaxiCalculator/1.0 (https://maleka.dev)',
+                'User-Agent': 'PFR/1.0 (https://maleka.dev)',
                 'Accept-Language': 'en-US,en;q=0.9,cs;q=0.8'
             }
         });
@@ -281,6 +289,56 @@ function calculateHaversineDistance(coord1, coord2) {
 
 // Cheaper ride state
 let isCheaperRide = false;
+
+// Switch between address and manual calculation modes
+function switchMode(mode) {
+    calculationMode = mode;
+    
+    const addressModeBtn = document.getElementById('addressModeBtn');
+    const manualModeBtn = document.getElementById('manualModeBtn');
+    const addressGroups = document.getElementById('addressGroups');
+    const manualDistanceGroup = document.getElementById('manualDistanceGroup');
+    const addressOnlyGroup = document.getElementById('addressOnlyGroup');
+    const manualOnlyGroup = document.getElementById('manualOnlyGroup');
+    
+    if (mode === 'address') {
+        addressModeBtn.classList.add('active');
+        manualModeBtn.classList.remove('active');
+        addressGroups.classList.remove('hidden');
+        manualDistanceGroup.classList.remove('active');
+        addressOnlyGroup.classList.remove('hidden');
+        manualOnlyGroup.classList.remove('active');
+    } else {
+        addressModeBtn.classList.remove('active');
+        manualModeBtn.classList.add('active');
+        addressGroups.classList.add('hidden');
+        manualDistanceGroup.classList.add('active');
+        addressOnlyGroup.classList.add('hidden');
+        manualOnlyGroup.classList.add('active');
+    }
+    
+    // Sync cheaper ride button states when switching modes
+    updateCheaperRideButtons();
+    
+    // Hide previous results when switching modes
+    hideResults();
+    hideError();
+}
+
+// Calculate price using manual distance input
+function calculateManualPrice() {
+    const regularDistanceInput = document.getElementById('regularDistance');
+    const zona2DistanceInput = document.getElementById('zona2Distance');
+    const regularDistance = parseFloat(regularDistanceInput.value) || 0;
+    const zona2Distance = parseFloat(zona2DistanceInput.value) || 0;
+    
+    if (regularDistance <= 0 && zona2Distance <= 0) {
+        showError('Please enter at least one distance (regular or zona 2).');
+        return;
+    }
+    
+    displayManualResults(regularDistance, zona2Distance);
+}
 
 // MD5 implementation for PIN verification
 function md5(string) {
@@ -463,19 +521,42 @@ function toggleCheaperRide() {
         isCheaperRide = false;
     }
     
-    const btn = document.getElementById('cheaperRideBtn');
+    // Update both buttons in address and manual modes
+    updateCheaperRideButtons();
+}
+
+// Helper function to update cheaper ride button states
+function updateCheaperRideButtons() {
+    const btn1 = document.getElementById('cheaperRideBtn');
+    const btn2 = document.getElementById('cheaperRideBtn2');
+    
+    const activeText = '💰 Cheaper Ride (ON)';
+    const inactiveText = '💰 Cheaper Ride';
+    
     if (isCheaperRide) {
-        btn.classList.add('active');
-        btn.textContent = '💰 Cheaper Ride (ON)';
+        if (btn1) {
+            btn1.classList.add('active');
+            btn1.textContent = activeText;
+        }
+        if (btn2) {
+            btn2.classList.add('active');
+            btn2.textContent = activeText;
+        }
     } else {
-        btn.classList.remove('active');
-        btn.textContent = '💰 Cheaper Ride';
+        if (btn1) {
+            btn1.classList.remove('active');
+            btn1.textContent = inactiveText;
+        }
+        if (btn2) {
+            btn2.classList.remove('active');
+            btn2.textContent = inactiveText;
+        }
     }
 }
 
 function displayResults(distanceKm) {
-    const baseRate = 5.2647; // CZK per km (526.47 CZK/100km)
-    const cheaperRate = 4.0647; // CZK per km (406.47 CZK/100km)
+    const baseRate = 6.1219; // CZK per km (612.19 CZK/100km)
+    const cheaperRate = 5.5719; // CZK per km (557.19 CZK/100km)
     let rate = baseRate;
     
     if (isCheaperRide) {
@@ -489,33 +570,133 @@ function displayResults(distanceKm) {
     const actualDistance = journeyType === 'return' ? distanceKm * 2 : distanceKm;
     const price = actualDistance * rate;
     
-    let finalTotal;
     let roundedProcessingFee = 0;
     
-    if (isCheaperRide) {
-        // Cheaper ride: no processing fee, round to nearest 10 CZK
-        finalTotal = Math.round(price / 10) * 10;
-    } else {
-        // Regular ride: 1.2% processing fee + 7 CZK, round to nearest 5 CZK
+    if (!isCheaperRide) {
+        // Regular ride: calculate processing fee (1.2% + 7 CZK)
         const processingFeePercent = price * 0.012;
         const processingFeeTotal = 7 + processingFeePercent;
         roundedProcessingFee = Math.round(processingFeeTotal * 100) / 100;
-        
-        const totalWithFee = price + roundedProcessingFee;
-        finalTotal = Math.round(totalWithFee / 5) * 5;
     }
     
     const roundedPrice = Math.round(price * 100) / 100;
     
-    // Store the final amount for payment
-    window.paymentAmount = finalTotal;
+    // Calculate final total for display (without processing fee, rounded to nearest 5 CZK)
+    let finalTotalDisplay;
+    // Calculate payment amount (with processing fee, for Revolut payment)
+    let paymentAmount;
+    
+    if (isCheaperRide) {
+        // Cheaper ride: no processing fee, round to nearest 10 CZK
+        finalTotalDisplay = Math.round(price / 10) * 10;
+        paymentAmount = finalTotalDisplay; // Same as display since no processing fee
+    } else {
+        // Regular ride: final display without fee, payment amount with fee
+        finalTotalDisplay = Math.round(price / 5) * 5; // Round price to nearest 5 CZK
+        
+        // For payment: add processing fee before storing
+        const totalWithFee = price + roundedProcessingFee;
+        paymentAmount = totalWithFee; // Don't round payment amount, keep exact
+    }
+    
+    // Store the payment amount (with processing fee if applicable)
+    window.paymentAmount = paymentAmount;
     
     // Display results
     document.getElementById('distance').textContent = `${actualDistance.toFixed(2)} km`;
     document.getElementById('currentRate').textContent = `${rate.toFixed(2)} CZK/km`;
     document.getElementById('totalPrice').textContent = `${roundedPrice.toFixed(2)} CZK`;
     document.getElementById('processingFeeAmount').textContent = `${roundedProcessingFee.toFixed(2)} CZK`;
-    document.getElementById('finalTotalAmount').textContent = `${finalTotal.toFixed(2)} CZK`;
+    document.getElementById('finalTotalAmount').textContent = `${finalTotalDisplay.toFixed(2)} CZK`;
+    
+    // Show/hide processing fee based on cheaper ride option
+    const processingFeeDiv = document.getElementById('processingFee');
+    if (isCheaperRide) {
+        processingFeeDiv.style.display = 'none';
+    } else {
+        processingFeeDiv.style.display = 'flex';
+    }
+    
+    // Show all elements including payment
+    showResults();
+    document.getElementById('finalTotal').style.display = 'flex';
+    document.getElementById('paymentSection').style.display = 'block';
+}
+
+// Display results for manual calculation with regular and zona 2 distances
+function displayManualResults(regularDistance, zona2Distance) {
+    const baseRate = 6.1219; // CZK per km (612.19 CZK/100km)
+    const cheaperRate = 5.5719; // CZK per km (557.19 CZK/100km)
+    
+    // Get base rate based on cheaper ride setting
+    const regularRate = isCheaperRide ? cheaperRate : baseRate;
+    const zona2Rate = regularRate * 2.0; // Zona 2 is 2x the current rate
+    
+    // Calculate prices
+    const regularPrice = regularDistance * regularRate;
+    const zona2Price = zona2Distance * zona2Rate;
+    const totalPrice = regularPrice + zona2Price;
+    const totalDistance = regularDistance + zona2Distance;
+    
+    // Build distance display
+    let distanceText = '';
+    if (regularDistance > 0 && zona2Distance > 0) {
+        distanceText = `${regularDistance.toFixed(1)} km regular + ${zona2Distance.toFixed(1)} km zona 2 = ${totalDistance.toFixed(1)} km total`;
+    } else if (regularDistance > 0) {
+        distanceText = `${regularDistance.toFixed(1)} km regular`;
+    } else {
+        distanceText = `${zona2Distance.toFixed(1)} km zona 2`;
+    }
+    
+    // Calculate processing fee for regular rides
+    let roundedProcessingFee = 0;
+    
+    if (!isCheaperRide) {
+        // Regular ride: calculate processing fee (1.2% + 7 CZK)
+        const processingFeePercent = totalPrice * 0.012;
+        const processingFeeTotal = 7 + processingFeePercent;
+        roundedProcessingFee = Math.round(processingFeeTotal * 100) / 100;
+    }
+    
+    const roundedPrice = Math.round(totalPrice * 100) / 100;
+    
+    // Calculate final total for display (without processing fee, rounded to nearest 5 CZK)
+    let finalTotalDisplay;
+    // Calculate payment amount (with processing fee, for Revolut payment)
+    let paymentAmount;
+    
+    if (isCheaperRide) {
+        // Cheaper ride: no processing fee, round to nearest 10 CZK
+        finalTotalDisplay = Math.round(totalPrice / 10) * 10;
+        paymentAmount = finalTotalDisplay; // Same as display since no processing fee
+    } else {
+        // Regular ride: final display without fee, payment amount with fee
+        finalTotalDisplay = Math.round(totalPrice / 5) * 5; // Round price to nearest 5 CZK
+        
+        // For payment: add processing fee before storing
+        const totalWithFee = totalPrice + roundedProcessingFee;
+        paymentAmount = totalWithFee; // Don't round payment amount, keep exact
+    }
+    
+    // Store the payment amount (with processing fee if applicable)
+    window.paymentAmount = paymentAmount;
+    
+    // Display results in existing elements
+    document.getElementById('distance').textContent = distanceText;
+    
+    // Show rate info
+    if (regularDistance > 0 && zona2Distance > 0) {
+        document.getElementById('currentRate').textContent = `Regular: ${regularRate.toFixed(2)} CZK/km, Zona 2: ${zona2Rate.toFixed(2)} CZK/km`;
+    } else if (regularDistance > 0) {
+        document.getElementById('currentRate').textContent = `${regularRate.toFixed(2)} CZK/km (regular)`;
+    } else {
+        document.getElementById('currentRate').textContent = `${zona2Rate.toFixed(2)} CZK/km (zona 2)`;
+    }
+    
+    // Show total price and final amount
+    document.getElementById('totalPrice').textContent = `${roundedPrice.toFixed(2)} CZK`;
+    document.getElementById('processingFeeAmount').textContent = `${roundedProcessingFee.toFixed(2)} CZK`;
+    document.getElementById('finalTotalAmount').textContent = `${finalTotalDisplay.toFixed(2)} CZK`;
     
     // Show/hide processing fee based on cheaper ride option
     const processingFeeDiv = document.getElementById('processingFee');

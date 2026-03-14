@@ -4,28 +4,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PTC • Maleka DEV</title>
+    <title>PFR • Maleka DEV</title>
     <link rel="icon" type="image/png" href="../media/malekadev_icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
     <style>
-        /* Taxi-specific styles that extend the main design */
-        .taxi-container {
+        /* PFR-specific styles that extend the main design */
+        .PFR-container {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
         
-        .taxi-header {
+        .PFR-header {
             padding: var(--space-lg) 0;
             background: rgba(17, 17, 20, 0.8);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border-primary);
         }
         
-        .taxi-main {
+        .PFR-main {
             flex: 1;
             padding: var(--space-xl) var(--space-lg);
             display: flex;
@@ -138,6 +138,79 @@
             background: #ffc107;
             color: #000;
             font-weight: 600;
+        }
+        
+        .calculation-mode {
+            margin-bottom: var(--space-lg);
+        }
+        
+        .mode-toggle {
+            display: flex;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .mode-btn {
+            flex: 1;
+            padding: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-smooth);
+            border-right: 1px solid var(--border-primary);
+        }
+        
+        .mode-btn:last-child {
+            border-right: none;
+        }
+        
+        .mode-btn.active {
+            background: var(--primary-blue);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .mode-btn:hover:not(.active) {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .manual-distance-group {
+            display: none;
+        }
+        
+        .manual-distance-group.active {
+            display: block;
+        }
+        
+        .address-groups {
+            display: block;
+        }
+        
+        .address-groups.hidden {
+            display: none;
+        }
+        
+        .address-only {
+            display: block;
+        }
+        
+        .address-only.hidden {
+            display: none;
+        }
+        
+        .manual-only {
+            display: none !important;
+        }
+        
+        .manual-only.active {
+            display: block !important;
         }
         
         .calculate-btn {
@@ -554,7 +627,7 @@
         
         /* Mobile responsive */
         @media (max-width: 768px) {
-            .taxi-main {
+            .PFR-main {
                 padding: var(--space-lg) var(--space-sm);
             }
             
@@ -577,10 +650,10 @@
         }
     </style>
     <!-- Using OpenStreetMap/Nominatim instead of Google Maps for no API key requirement -->
-    <script src="taxi-script.js"></script>
+    <script src="PFR-script.js"></script>
 </head>
 
-<<body class="taxi-container">
+<<body class="PFR-container">
     <!-- Background elements from main design -->
     <div class="background-container">
         <div class="stars"></div>
@@ -592,25 +665,46 @@
         </div>
     </div>
     
-    <main class="taxi-main">
+    <main class="PFR-main">
         <div class="calculator-card">
-            <h1 class="calculator-title">🚖 PTC</h1>
+            <h1 class="calculator-title">🚖 PFR</h1>
             <p class="calculator-subtitle">Calculate the price for your ride</p>
             
             <div class="calculator-form">
-                <div class="form-group">
-                    <label for="startAddress" class="form-label">From (Starting Address):</label>
-                    <input type="text" id="startAddress" class="form-input" placeholder="Enter starting address..." />
-                    <div class="suggestions" id="startSuggestions"></div>
+                <div class="calculation-mode">
+                    <label class="form-label">Calculation Mode:</label>
+                    <div class="mode-toggle">
+                        <button type="button" class="mode-btn active" id="addressModeBtn" onclick="switchMode('address')">📍 Address</button>
+                        <button type="button" class="mode-btn" id="manualModeBtn" onclick="switchMode('manual')">📏 Distance</button>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="endAddress" class="form-label">To (Destination Address):</label>
-                    <input type="text" id="endAddress" class="form-input" placeholder="Enter destination address..." />
-                    <div class="suggestions" id="endSuggestions"></div>
+                <div class="address-groups" id="addressGroups">
+                    <div class="form-group">
+                        <label for="startAddress" class="form-label">From (Starting Address):</label>
+                        <input type="text" id="startAddress" class="form-input" placeholder="Enter starting address..." />
+                        <div class="suggestions" id="startSuggestions"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endAddress" class="form-label">To (Destination Address):</label>
+                        <input type="text" id="endAddress" class="form-input" placeholder="Enter destination address..." />
+                        <div class="suggestions" id="endSuggestions"></div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
+                <div class="manual-distance-group" id="manualDistanceGroup">
+                    <div class="form-group">
+                        <label for="regularDistance" class="form-label">Regular Distance (km):</label>
+                        <input type="number" id="regularDistance" class="form-input" placeholder="Enter regular distance..." min="0" step="0.1" />
+                    </div>
+                    <div class="form-group">
+                        <label for="zona2Distance" class="form-label">Zona 2 Distance (km) - Night/Out of City:</label>
+                        <input type="number" id="zona2Distance" class="form-input" placeholder="Enter zona 2 distance..." min="0" step="0.1" />
+                    </div>
+                </div>
+                
+                <div class="form-group address-only" id="addressOnlyGroup">
                     <label for="journeyType" class="form-label">Journey Type:</label>
                     <div class="journey-controls">
                         <select id="journeyType" class="form-select journey-select">
@@ -618,6 +712,12 @@
                             <option value="return" selected>+ Return</option>
                         </select>
                         <button type="button" id="cheaperRideBtn" class="cheaper-ride-btn" onclick="toggleCheaperRide()">💰 Cheaper Ride</button>
+                    </div>
+                </div>
+                
+                <div class="form-group manual-only" id="manualOnlyGroup">
+                    <div class="journey-controls">
+                        <button type="button" id="cheaperRideBtn2" class="cheaper-ride-btn" onclick="toggleCheaperRide()">💰 Cheaper Ride</button>
                     </div>
                 </div>
                 
@@ -630,7 +730,7 @@
                     </div>
                     <div class="result-item">
                         <span class="label">Rate:</span>
-                        <span class="value" id="currentRate">5.26 CZK/km</span>
+                        <span class="value" id="currentRate">6.12 CZK/km</span>
                     </div>
                     <div class="result-item total">
                         <span class="label">Total Price:</span>
@@ -641,7 +741,7 @@
                         <span class="value" id="processingFeeAmount">-</span>
                     </div>
                     <div class="result-item final-total" id="finalTotal" style="display: none;">
-                        <span class="label">Final Amount (incl. processing):</span>
+                        <span class="label">Final Amount (without processing fee):</span>
                         <span class="value" id="finalTotalAmount">-</span>
                     </div>
                     
@@ -666,16 +766,20 @@
             <div class="info-section">
                 <h3>📋 Information</h3>
                 <ul>
-                    <li>Rate: 5.26 CZK per kilometer</li>
-                    <li>Cheaper ride rate: 4.06 CZK per kilometer</li>
-                    <li>Choose between one way or + return journey</li>
-                    <li>Enter valid Czech addresses for accurate calculations</li>
-                    <li>This is NOT publicly available service, this only serves as a private tool to calculate how much should I charge friends for trips they ask me for.</li>
+                    <li>Rate: 6.12 CZK per kilometer</li>
+                    <li>Friends' rate: 5.57 CZK per kilometer</li>
+                    <li>Zona 2: Outside the city limits or between 10 p.m. and 6 a.m.</li>
+                </ul>
+                <h3>⚠️ Disclaimer</h3>
+                <ul>
+                    <li>I don't operate a taxi service or have a taxi license because this is just a tool I use for my own personal calculations.</li>
+                    <li>This is NOT a public service or advertisement. It is a private tool used to calculate how much I should charge friends for trips they ask me to take.</li>
+                    <li>The rate is calculated manually based on my vehicle's service data (fuel consumption and depreciation) or the market price of fuel, and is updated at least once a month to ensure that only the costs incurred are reimbursed, without generating a profit.</li>
                 </ul>
             </div>
             
             <div class="card-footer">
-                <span>PTC by Maleka DEV 🚗</span>
+                <span>PFR by Maleka DEV 🚗</span>
             </div>
         </div>
     </main>
