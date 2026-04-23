@@ -1,10 +1,31 @@
 // PFR Calculator JavaScript using OpenStreetMap/Nominatim (no API key needed)
 let debounceTimer;
 
+// Rate constants - UPDATE THESE TO CHANGE PRICING
+const RATES = {
+    base: 6.474,    // CZK per km (647.4 CZK/100km)
+    cheaper: 4.724  // CZK per km (472.4 CZK/100km)
+};
+
 // Initialize the page when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     setupAddressAutocomplete();
+    updateRateDisplays();
 });
+
+// Function to update rate displays in the HTML
+function updateRateDisplays() {
+    // Update info section displays
+    const regularRateDisplay = document.getElementById('regularRateDisplay');
+    const cheaperRateDisplay = document.getElementById('cheaperRateDisplay');
+    
+    if (regularRateDisplay) {
+        regularRateDisplay.textContent = RATES.base.toFixed(2);
+    }
+    if (cheaperRateDisplay) {
+        cheaperRateDisplay.textContent = RATES.cheaper.toFixed(2);
+    }
+}
 
 // Calculation mode state
 let calculationMode = 'address'; // 'address' or 'manual'
@@ -555,19 +576,24 @@ function updateCheaperRideButtons() {
 }
 
 function displayResults(distanceKm) {
-    const baseRate = 6.1807; // CZK per km (618.07 CZK/100km)
-    const cheaperRate = 4.4307; // CZK per km (443.07 CZK/100km)
-    let rate = baseRate;
+    let rate = RATES.base;
     
     if (isCheaperRide) {
         // Use the cheaper rate directly
-        rate = cheaperRate;
+        rate = RATES.cheaper;
     }
     
     const journeyType = document.getElementById('journeyType').value;
     
     // Calculate distance based on journey type
     const actualDistance = journeyType === 'return' ? distanceKm * 2 : distanceKm;
+    
+    // Update the rate display in results
+    const currentRateElement = document.getElementById('currentRate');
+    if (currentRateElement) {
+        const rateDisplay = isCheaperRide ? RATES.cheaper : RATES.base;
+        currentRateElement.textContent = `${rateDisplay.toFixed(2)} CZK/km`;
+    }
     const price = actualDistance * rate;
     
     let roundedProcessingFee = 0;
@@ -625,11 +651,8 @@ function displayResults(distanceKm) {
 
 // Display results for manual calculation with regular and zona 2 distances
 function displayManualResults(regularDistance, zona2Distance) {
-    const baseRate = 6.1807; // CZK per km (618.07 CZK/100km)
-    const cheaperRate = 4.4307; // CZK per km (443.07 CZK/100km)
-    
     // Get base rate based on cheaper ride setting
-    const regularRate = isCheaperRide ? cheaperRate : baseRate;
+    const regularRate = isCheaperRide ? RATES.cheaper : RATES.base;
     const zona2Rate = regularRate * 2.0; // Zona 2 is 2x the current rate
     
     // Calculate prices
