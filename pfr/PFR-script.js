@@ -3,8 +3,8 @@ let debounceTimer;
 
 // Rate constants - UPDATE THESE TO CHANGE PRICING
 const RATES = {
-    base: 6.474,    // CZK per km (647.4 CZK/100km)
-    cheaper: 4.724  // CZK per km (472.4 CZK/100km)
+    base: 6.7943,   // CZK per km (679.43 CZK/100km)
+    cheaper: 5.0443 // CZK per km (504.43 CZK/100km)
 };
 
 // Initialize the page when DOM is loaded
